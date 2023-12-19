@@ -5,7 +5,7 @@ function [maskedBW] = Mask_Image_wCentroid(I)
 %file from https://www.mathworks.com/matlabcentral/answers/839200-create-circular-mask-and-assign-zero-outside-the-mask-in-an-image#answer_708390
 
 
-% % Read in the image from disk.
+% % Read in the image from disk. %for debugging outside of main script
 % originalImage = imread(I);
 
 % Get the dimensions of the image.  numberOfColorBands should be = 1.

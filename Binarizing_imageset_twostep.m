@@ -7,9 +7,31 @@
 clear ; clc; close all
 
 
-% (!) USER INPUT: state the experiment number and condition ------
-expt_no = '9';
-condition = 'static';
+% Prompt the user to input a value for a variable ------
+expt_no = input('What is the experiment number?');
+condition = input('What is the experiment condition?' , 's');
+num_days = input('What are the number of days of the experiment?');
+pixel_size = input('What is the um/pixel ratio of your images?');
+
+% Display the specified variable value
+disp(['Experiment #: ' num2str(expt_no)]);
+disp(['Condition: ' num2str(condition)]);
+disp(['Number of days: ' num2str(num_days)]);
+disp(['Pixel size #: ' num2str(pixel_size)]);
+
+% State the experiment number and condition ------
+% expt_no = '18';
+% condition = 'static';
+% 
+% % State length of experiment (days) and image pixel size
+% 
+% % Comparing day 2 to day 0 for now
+% num_days = 2;
+% 
+% %Experiment 12 images captured at 10X on the Keyence microscope
+% % - the pixel size is 0.75488 um/pixel
+% pixel_size = 0.75488; %um/pixel
+
 
 %% Set up folder to obtain images
 
@@ -45,8 +67,6 @@ for f = 1:2:numel(files)
 
 
 
-
-
     %% Process images
     
     %Binarize the images    
@@ -60,6 +80,7 @@ for f = 1:2:numel(files)
     disp('Masking images with circle')
     [maskedBW] = Mask_Image_wCentroid(correctedBW); %Not needed for day0 but good for consistency
     [maskedBW2] = Mask_Image_wCentroid(correctedBW2);
+
 
     
     %% Save the images  
@@ -132,14 +153,13 @@ for f = 1:2:numel(files)
     %---------------------%
 
 %     disp('Paused, check on pdf file and when finished type next to continue')
-    disp('Paused, rename the images (corrected + masked) in file explorer and check on pdf file.')
+    disp('Paused, check on images and pdf in file explorer.')
     disp('When finished type next to continue')
     input('next')
     %---------------------%
 
     
     %% Move to next spheroid
-    %loop_count = loop_count + 1;
     close all
   
 end

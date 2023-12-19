@@ -1,14 +1,14 @@
 function [outer_distance_magnitude, outer_distances_xy, full_distance_magnitude, full_distances_xy, ...
     boundary_intersect, horizontal_line] = CalculateDistances(outer_pixels, centroid_loc, boundary, binary_image)
-%FindDistanceFromLine finds the minnimum distance from target_point to the
+% CalculateDistances finds the minnimum distance from target_point to the
 % line defined by linePointOne and zeroPoint. The functions zeros the
 % coordinate system at zeroPoint. Each point should be aranged as
 % point = [x_loc; y_loc]
-%   Detailed explanation goes here --outerpixels here is given as one cell
-%   at a time
+% - outerpixels here is given as one cell at a time
 
-%% The full distance
-%Calculate the full distances
+
+%% Calculate the distance between the spheroid centroid and outer pixels (full distance)
+
 full_distance_magnitude = cell(length(outer_pixels),1);
 full_distances_xy = cell(length(outer_pixels),1);
 for i = 1:length(outer_pixels) 
@@ -53,10 +53,13 @@ hold off
 
 
 
-%% The distance from the boundary
-%Calculate and store the intersection of the boundary and the distance %%%%%%%%%%
-%tic
+%% Calculate the distance between the Day0 boundary and outer pixels
 
+% - Calculate and store the intersection of the boundary and the full distance. 
+% - Reassign only the portion of the full distance line that is between the
+% - boundary and outer pixels as the "outer distance".
+
+%tic
 
 %Initialize storage cells
 outer_distance_magnitude = cell(length(outer_pixels), 1);

@@ -1,10 +1,10 @@
 function [distance_magnitude,boundary_xint,boundary_yint] = IntersectionDistance(outer_pixels, centroid_loc, boundary)
-% IntersectionDistance finds the minimum distance from target_point to the
-% line defined by x1 (outerpixel) and x0 (centroid loc). The functions zeros the
-% coordinate system at x0. Each point should be arranged as point = [x_loc; y_loc]
-% Outerpixels here is fed in as one {cell} at a time
+% IntersectionDistance finds the minimum distance from the Day0 boundary to a point of interest (POI).  
+% The POI is on a line between the spheroid centroid (centroid_loc, x0) and the invaded cell pixels (outer_pixels, x1).
+% The function zeros the coordinate system at x0. Each point should be arranged as point = [x_loc; y_loc]
+% Outerpixels is fed in as one {cell} at a time
 
-% Define coordinates and center along centroid location to make calculations
+% Define coordinates and center everything along the centroid location to make calculations
 % easier
 x0 = centroid_loc(1); y0 = centroid_loc(2);
 x1 = outer_pixels(:,1)' - x0; y1 = outer_pixels(:,2)' - y0; % a (1 x N) array
@@ -27,9 +27,10 @@ x_min = (xb_reshaped + m .* yb_reshaped) ./ (1 + m.^2); % shape M, N
 y_min = m .* x_min; % shape M, N
 d = sqrt((xb_reshaped - x_min).^2 + (yb_reshaped - y_min).^2); % shape M, N
 
-% Filter out the parts of the boundary that are unwanted
 
-% - Part 1: The half of the boundary that is on the opposie side from POI
+% Filter out the parts of the boundary that are unwanted --------------- %
+
+% - Part 1: The half of the boundary that is on the opposite side from POI
 %  - not nearest the POI
 perp_x1 = 1;
 perp_x2 = -1;
@@ -43,9 +44,12 @@ perp_mask = (perp_valb ./ abs(perp_valb)) ~= (perp_val_locs ./ abs(perp_val_locs
 % - the centroid than the POI
 dist_mask = (xb_reshaped.^2 + yb_reshaped.^2) > (x1_reshaped.^2 + y1_reshaped.^2);
 
-% - Apply filters
+% - Part 3: Apply filters
 tot_mask = logical(perp_mask + dist_mask);
 d(tot_mask) = max(max(d));
+
+% -------------------------------------------------------------------- %
+
 
 % Find the intercept by finding the boundary point closest to the line
 [~, close_inds] = min(d, [], 1); % shape 1, N
