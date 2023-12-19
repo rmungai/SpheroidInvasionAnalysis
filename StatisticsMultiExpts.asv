@@ -1,0 +1,238 @@
+%% Image quantification MATLAB script for 3D spheroid migration
+% Rozanne Mungai Billiar Lab; October 2022
+% -------------------PART 4----------------------
+%---------- USE ON COMPILED QUANTIFIED DATA ------------
+% Perform statistics on consilidated data for multiple experiments for one cell type and plot
+
+%clear ; clc; close all
+
+%% User input
+% - Load desired variables and plot: This has been optimized for plotting
+% average results for each expt
+
+%% Plot values 
+
+% Plot the area fold change values in a bar graph --------------
+figure
+x = categorical({'Stretch', 'Static'});
+x = reordercats(x,{'Stretch', 'Static'});
+y = [mean(Dareas), mean(Sareas)];
+b = bar(x, y);
+
+%Calculate standard error of the mean
+err_a_dDay2= std(Dareas) / sqrt( length(Dareas));
+err_a_sDay2= std(Sareas) / sqrt( length(Sareas));
+model_error = [err_a_dDay2; err_a_sDay2];
+
+%Add error bars to plot
+nbars = 1;
+nvariables = 2;
+xerr = nan(nbars, nvariables);
+for i = 1:nbars
+    xerr(i,:) = b(i).XEndPoints;
+end
+hold on
+er = errorbar(xerr', y, model_error,'k','linestyle','none');   
+hold off
+
+title('Fold change in spheroid area')
+ylabel('Area fold change')
+set(gca,'Fontname','arial', 'FontSize',14);
+
+
+
+
+% Plot persistent speed ------------------------------------------
+
+% % Plot all the values
+% figure
+% x = categorical({'max', 'median', 'mean'});
+% x = reordercats(x,{'max', 'median', 'mean'});
+% y = [static_max_speed, static_median_speed, static_mean_speed;
+%     dynamic_max_speed, dynamic_median_speed, dynamic_mean_speed];
+% b = bar(x, y);
+% b(2).FaceColor = 'c';
+% title('Representative speed values')
+% ylabel('speed (um)')
+% legend('static', 'dynamic');
+% set(gca,'Fontname','arial', 'FontSize',14);
+
+% Plot just the mean values
+figure
+x = categorical({'static', 'dynamic'});
+x = reordercats(x,{'static', 'dynamic'});
+y = [mean(S_speedmean), mean(D_speedmean)];
+b = bar(x, y);
+
+%Calculate standard error of the mean and add to plot
+err_s_static= std(S_speedmean) / sqrt( length(S_speedmean));
+err_s_dynamic= std(D_speedmean) / sqrt( length(D_speedmean));
+
+model_error = [err_s_static, err_s_dynamic];
+% hold on
+% er = errorbar(x, y, model_error,'k','linestyle','none');   
+% hold off
+
+%Add error bars to plot
+nbars = 1;
+nvariables = 2;
+xerr = nan(nbars, nvariables);
+for i = 1:nbars
+    xerr(i,:) = b(i).XEndPoints;
+end
+hold on
+er = errorbar(xerr', y, model_error,'k','linestyle','none');   
+hold off
+
+title('Mean persistence speed')
+ylabel('speed (um/min)')
+set(gca,'Fontname','arial', 'FontSize',14);
+
+
+% -----------------------------------------------------------
+
+
+
+
+
+%% Moment of inertia with Ix and Iy only
+
+%Plot the moment of inertia values in a bar graph --------------
+figure
+x = categorical({'Ix', 'Iy'});
+x = reordercats(x,{'Ix', 'Iy'});
+y = [mean(SIx_mean), mean(DIx_mean);
+    mean(SIy_mean), mean(DIy_mean)];
+% y = [mean(Ix_static), mean(Iy_static);
+%     mean(Ix_dynamic), mean(Iy_dynamic)];
+b = bar(x, y);
+b(2).FaceColor = 'c';
+
+
+%Calculate standard error of the mean
+err_Ixs= std(SIx_mean) / sqrt( length(SIx_mean));
+err_Iys= std(SIy_mean) / sqrt( length(SIy_mean));
+
+err_Ixd= std(DIx_mean) / sqrt( length(DIx_mean));
+err_Iyd= std(DIy_mean) / sqrt( length(DIy_mean));
+
+model_error = [err_Ixs, err_Ixd; err_Iys, err_Iyd];
+% model_error = [err_Ixs, err_Iys; err_Ixd, err_Iyd];
+
+%Add error bars to plot
+nbars = 2;
+nvariables = 2;
+xerr = nan(nbars, nvariables);
+for i = 1:nbars
+    xerr(i,:) = b(i).XEndPoints;
+end
+hold on
+er = errorbar(xerr', y, model_error,'k','linestyle','none');   
+hold off
+
+title('Moment of inertia values')
+ylabel('Moment (um^4)')
+legend('static', 'dynamic');
+set(gca,'Fontname','arial', 'FontSize',14);
+
+
+%% Moment of inertia with Ir, Ix and Iy 
+% %Plot the moment of inertia values in a bar graph --------------
+% figure
+% x = categorical({'Ir', 'Ix', 'Iy'});
+% x = reordercats(x,{'Ir', 'Ix', 'Iy'});
+% 
+% y = [mean(Ir_static), mean(Ir_dynamic);
+%     mean(Ix_static), mean(Iy_static);
+%     mean(Iy_static), mean(Iy_dynamic)];
+% 
+% % y = [mean(Ir_static), mean(Ix_static), mean(Iy_static);
+% %     mean(Ir_dynamic), mean(Ix_dynamic), mean(Iy_dynamic)];
+% b = bar(x, y);
+% b(2).FaceColor = 'c';
+% 
+% 
+% %Calculate standard error of the mean
+% err_Irs= std(Ir_static) / sqrt( length(Ir_static));
+% err_Ixs= std(Ix_static) / sqrt( length(Ix_static));
+% err_Iys= std(Iy_static) / sqrt( length(Iy_static));
+% 
+% err_Ird= std(Ir_dynamic) / sqrt( length(Ir_dynamic));
+% err_Ixd= std(Ix_dynamic) / sqrt( length(Ix_dynamic));
+% err_Iyd= std(Iy_dynamic) / sqrt( length(Iy_dynamic));
+% % model_error = [err_Irs, err_Ixs, err_Iys; err_Ird, err_Ixd, err_Iyd];
+% model_error = [err_Irs, errIrd; err_Ixs, err_Ixd, err_Iys, err_Iyd];
+% 
+% 
+% %Add error bars to plot
+% nbars = 2;
+% nvariables = 3;
+% xerr = nan(nbars, nvariables);
+% for i = 1:nbars
+%     xerr(i,:) = b(i).XEndPoints;
+% end
+% hold on
+% % er = errorbar(xerr, y, model_error,'k','linestyle','none');   
+% er = errorbar(xerr', y, model_error,'k','linestyle','none');   
+% % hold off
+% 
+% title('Moment of inertia values')
+% ylabel('Moment (um^4)')
+% legend('static', 'dynamic');
+% set(gca,'Fontname','arial', 'FontSize',14);
+%% T-test
+
+% Perform a student's t-test on the data
+% - at the default 5% significance level
+% - Null hypothesis: dynamic and static samples are not different
+% - h: hypothesis, either 0 (null is not rejected) or 1 (null is rejected)
+% - p: p-value
+%
+% - ttest(): one-sample and paired-sample t-test - assumes related groups, under different situations
+% - ttest2(): unpaired two-sample t-test - assumes equal variance, different groups
+
+
+% T-test of spheroid area fold change
+[h,p] = ttest(Sareas, Dareas)
+[h,p] = ttest2(Sareas, Dareas)
+
+% T-test of persistence speed
+[h,p] = ttest(S_speedmean, D_speedmean)
+[h,p] = ttest2(S_speedmean, D_speedmean)
+
+% T-test of area moment of inertia
+% -- guage whether invasion extent diff is signif in static vs dynamic
+[h,p] = ttest(SIr_mean, DIIr_dynamic(3:5))
+[h,p] = ttest2(Ir_static,Ir_dynamic)
+
+[h,p] = ttest(Ix_static,Ix_dynamic(3:5))
+[h,p] = ttest2(Ix_static,Ix_dynamic)
+
+[h,p] = ttest(Iy_static,Iy_dynamic(3:5))
+[h,p] = ttest2(Iy_static,Iy_dynamic)
+
+% -- guage whether invasion direction is depend on stretch direction
+[h,p] = ttest(Ix_static,Iy_static)
+[h,p] = ttest2(Ix_static,Iy_static)
+
+[h,p] = ttest(Ix_dynamic,Iy_dynamic)
+[h,p] = ttest2(Ix_dynamic,Iy_dynamic)
+
+
+
+
+% %Plot the moment of inertia values in a bar graph--------------
+% figure
+% x = categorical({'Ir', 'Ix', 'Iy'});
+% x = reordercats(x,{'Ir', 'Ix', 'Iy'});
+% y = [Ir, Ix, Iy];
+% bar(x, y)
+% 
+% title('Moment of inertia values')
+% ylabel('Moment')
+% 
+% %Add values on top of the bars
+% labels = {num2str(Ir), num2str(Ix), num2str(Iy) };
+% xt = get(gca, 'XTick');
+% text(xt, y, labels, 'HorizontalAlignment','center', 'VerticalAlignment','bottom')
+
