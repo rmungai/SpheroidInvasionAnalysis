@@ -65,7 +65,7 @@ polarhistogram(angles_array, 20);
 title('Angles histogram')
 set(gca,'Fontname','arial', 'FontSize',14);
 
-%Plot the max, median and mean distances in a bar graph--------------
+%Plot the max, median and mean distances from the boundary in a bar graph--------------
 max_dist = max(outerdistance_lengths);
 median_dist = median(outerdistance_lengths);
 mean_dist = mean(outerdistance_lengths);
@@ -76,7 +76,7 @@ x = reordercats(x,{'max', 'median', 'mean'});
 y = [max_dist, median_dist, mean_dist];
 bar(x, y)
 
-title('Representative distance values')
+title('Representative distance values from the boundary')
 ylabel('distance (pixels)')
 set(gca,'Fontname','arial', 'FontSize',14);
 

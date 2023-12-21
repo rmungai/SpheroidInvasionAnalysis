@@ -12,10 +12,10 @@
 clear ; clc; close all
 
 %% Prompt the user to input a value for a variable ------
-expt_no = input('What is the experiment number?');
-condition = input('What is the experiment condition?' , 's');
-num_days = input('What are the number of days of the experiment?');
-pixel_size = input('What is the um/pixel ratio of your images?');
+expt_no = input('What is the experiment number?  ', 's');
+condition = input('What is the experiment condition?  ' , 's');
+num_days = input('What are the number of days of the experiment?  ');
+pixel_size = input('What is the um/pixel ratio of your images?  ');
 
 % Display the specified variable value
 disp(['Experiment #: ' num2str(expt_no)]);
@@ -23,17 +23,16 @@ disp(['Condition: ' num2str(condition)]);
 disp(['Number of days: ' num2str(num_days)]);
 disp(['Pixel size #: ' num2str(pixel_size)]);
 
-% % State the experiment number and condition ------
+% % State your experiment details ------ %Use if preferred over prompt
 % expt_no = '18';
 % condition = 'static';
 % 
-% % State length of experiment (days) and image pixel size
-% 
-% % Comparing day 2 to day 0 for now
+% % Experiment duration
+% % - example: Day 0 to Day 2
 % num_days = 2;
 % 
-% %Experiment 12 images captured at 10X on the Keyence microscope
-% % - the pixel size is 0.75488 um/pixel
+% %Pixel size of your microscope images
+% % - example: 0.75488 um/pixel
 % pixel_size = 0.75488; %um/pixel
 
 
@@ -41,25 +40,31 @@ disp(['Pixel size #: ' num2str(pixel_size)]);
 
 % Prompt the user to select a folder
 disp('Select a folder to import images.')
-selectedFolder = uigetdir('C:\', 'Select a folder');
+selected_folder = uigetdir('C:\', 'Select a folder');
 
 % Check if the user clicked 'Cancel'
-if selectedFolder == 0
+if selected_folder == 0
     disp('User canceled folder selection.');
 else
-    % Display the selected folder
-    disp(['Selected folder: ' selectedFolder]);
+    % Add the folder to the MATLAB path
+    addpath(genpath(selected_folder));
+    % Display the selected folder path
+    disp(['Folder added to the MATLAB path: ' selected_folder]);
 end
 
 
+
+
 %Get a list of the desired files in the chosen folder
-filePattern = fullfile(selectedFolder, '*.tif');
-files = dir(filePattern);
+file_pattern = fullfile(selected_folder, '*.tif');
+files = dir(file_pattern);
 
 
 %% Start the loop
 
 for f = 1:2:numel(files)
+    
+    
 
     %Read through two of the filenames at a time to compare the 
     % day0 and day2 images
@@ -126,7 +131,7 @@ for f = 1:2:numel(files)
 %     %---------------------%
         
     % Plot the distances and angles vs the areas (function 6)
-   [final_pixels, Irb, Ixb, Iyb,  Irc, Ixc, Iyc, max_distance, median_distance, mean_distance, ...
+   [final_pixels, Irb, Ixb, Iyb,  Irc, Ixc, Iyc, max_dist, median_dist, mean_dist, ...
        speedum_array, angles_array] = PlotPixelDistancesandAngles(outer_distance_magnitude, outer_distances_xy, ...
        full_distance_magnitude, full_distances_xy, angles, num_days, pixel_size);
 
@@ -137,43 +142,74 @@ for f = 1:2:numel(files)
 
     
     % (1) Save as matlab figures ...................
+    disp('Saving figures')
+    disp(' ')
 
-    spheroid_set = extractBetween(filename0,1,'_');
+
+    % % Prompt the user to select a folder for saving the figures
+    % selected_folder = uigetdir('C:\', 'Select a folder for saving the figures');
+    % 
+    % % Check if the user clicked 'Cancel'
+    % if selected_folder == 0
+    %     disp('User canceled folder selection.');
+    % else
+    %     % Create a new folder with a unique name
+    %     new_foldername = ['Figures expt', expt_no, ' quantified sph#', spheroid_set{1},' ', condition];
+    %     new_folderpath = fullfile(selected_folder, new_foldername);
+    %     mkdir(new_folderpath);
+    % 
+    %     % Save each figure with a unique file name in the specified folder
+    %     for i = 1:numel(figHandles)
+    %         % Specify the file name for the saved figure
+    %         fileName = ['Fig' num2str(i) ' expt', expt_no, ' ', condition, ' quantified sph#', spheroid_set{1}];
+    % 
+    %         % Full file path including the folder, file name, and extension
+    %         fullFilePath = fullfile(new_folderpath, [fileName, '.fig']);
+    % 
+    %         % Save the figure as a .fig file (MATLAB figure file)
+    %         saveas(i, fullFilePath, 'fig');
+    % 
+    %         disp(['Figure ' num2str(i) ' saved to: ' fullFilePath]);
+    %     end
+    % 
+    % end
+
+
+    
+      
+    % Create a new folder with a unique name
+    spheroid_set = extractBetween(filename0,1,'_'); %requires that images start with the spheroid# and underscore
     figHandles = flip(findall(0,'Type','figure'),1);
+    
+    cd(selected_folder); cd('..');
+    new_foldername = ['Figs+vars expt', expt_no, ' quantified sph#', spheroid_set{1},' ', condition];
+    new_folderpath = fullfile(pwd, new_foldername);
+    
+    %cd(selected_folder); cd('..');
+    mkdir(new_foldername);
 
-    % Prompt the user to select a folder for saving the figures
-    selectedFolder = uigetdir('C:\', 'Select a folder for saving the figures');
+    % Save each figure with a unique file name in the specified folder
+    for i = 1:numel(figHandles)
+        % Specify the file name for the saved figure
+        fileName = ['Fig' num2str(i) ' expt', expt_no, ' ', condition, ' quantified sph#', spheroid_set{1}];
 
-    % Check if the user clicked 'Cancel'
-    if selectedFolder == 0
-        disp('User canceled folder selection.');
-    else
-        % Create a new folder with a unique name
-        newFolderName = ['Figures expt',expt_no, ' quantified sph#', spheroid_set{1},' ', condition];
-        newFolderPath = fullfile(selectedFolder, newFolderName);
-        mkdir(newFolderPath);
+        % Full file path including the folder, file name, and extension
+        fullFilePath = fullfile(new_folderpath, [fileName, '.fig']);
 
-        % Save each figure with a unique file name in the specified folder
-        for i = 1:numel(figHandles)
-            % Specify the file name for the saved figure
-            fileName = ['Fig' num2str(i) ' expt',expt_no, ' ', condition, ' quantified sph#', spheroid_set{1}];
+        % Save the figure as a .fig file (MATLAB figure file)
+        saveas(i, fullFilePath, 'fig');
 
-            % Full file path including the folder, file name, and extension
-            fullFilePath = fullfile(newFolderPath, [fileName, '.fig']);
-
-            % Save the figure as a .fig file (MATLAB figure file)
-            saveas(i, fullFilePath, 'fig');
-
-            disp(['Figure ' num2str(i) ' saved to: ' fullFilePath]);
-        end
+        disp(['Figure ' num2str(i) ' saved to: ' fullFilePath]);
     end
-
-
-
+    
+    
+        
     % (2) Save figures into a pdf file .................
+    cd(new_folderpath);
+    cd('..')
 
     % Method using the exportgraphics function (works with MATLAB R2022a)
-    pdf_name = ['Expt',expt_no, ' quantified sph#', spheroid_set{1},' ', condition, '.pdf'];
+    pdf_name = ['Expt', expt_no, ' quantified sph#', spheroid_set{1},' ', condition, '.pdf'];
     disp(['Now writing: ',pdf_name]);
 
     exportgraphics(figHandles(1),pdf_name)
@@ -189,9 +225,9 @@ for f = 1:2:numel(files)
     %% Save the relevant data for further processing
 
     disp('Saving relevant workspace variables to file explorer')
-    save(['Vars w mask- expt', expt_no, ' ', condition, ' sph', spheroid_set{1}], ...
+    save(['Vars - expt', expt_no, ' ', condition, ' sph', spheroid_set{1}], ...
         'final_pixels', 'Irb', 'Ixb', 'Iyb', 'Irc', 'Ixc', 'Iyc', 'areas', 'areas2',...
-        'max_distance', 'median_distance', 'mean_distance', 'speedum_array', 'angles_array')
+        'max_dist', 'median_dist', 'mean_dist', 'speedum_array', 'angles_array')
 
 
    
@@ -201,9 +237,10 @@ for f = 1:2:numel(files)
 %     input('next')
 %     %---------------------%
 
-close all
 
-%     loop_count = loop_count + 1;
+close all
+cd(selected_folder)
+
 
 end
 

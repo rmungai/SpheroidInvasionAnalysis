@@ -11,13 +11,13 @@ clear ; clc; close all
 expt_no = input('What is the experiment number?');
 condition = input('What is the experiment condition?' , 's');
 num_days = input('What are the number of days of the experiment?');
-pixel_size = input('What is the um/pixel ratio of your images?');
+%pixel_size = input('What is the um/pixel ratio of your images?');
 
 % Display the specified variable value
 disp(['Experiment #: ' num2str(expt_no)]);
 disp(['Condition: ' num2str(condition)]);
 disp(['Number of days: ' num2str(num_days)]);
-disp(['Pixel size #: ' num2str(pixel_size)]);
+%disp(['Pixel size #: ' num2str(pixel_size)]);
 
 % State the experiment number and condition ------
 % expt_no = '18';
@@ -53,6 +53,12 @@ filePattern = fullfile(selectedFolder, '*.tif');
 files = dir(filePattern);
 
 
+% Create a new folder for saving new binarized images
+% newFolderName = 'Binarized images';
+% newFolderPath = fullfile(selectedFolder, newFolderName);
+mkdir('Binarized images');
+
+
 %% Start the loop
 
 for f = 1:2:numel(files) 
@@ -86,61 +92,30 @@ for f = 1:2:numel(files)
     %% Save the images  
 
     %Save the corrected images to specified folder
-    disp('Now saving images to specified folder')
+    %cd('Binarized images')
+    disp('Now saving binarized images to specified folder')
 
     %Save binarized images ..................................
     % Save each image with a unique name in the specified folder
-    corrected_images = {correctedBW, correctedBW2};
-    for i = 1:2
-        % Prompt the user to select a folder and specify a file name for saving
-        disp(['Save binarized image ' num2str(i)])
-        [fileName, filePath] = uiputfile('*.tif', 'Save binarized TIFF Image As');
-
-        % Check if the user clicked 'Cancel'
-        if fileName == 0
-            disp('User canceled file saving.');
-        else
-            % Display the selected file name and path
-            disp(['Selected file name: ' fileName]);
-            disp(['Selected file path: ' filePath]);
-            fullFilePath = fullfile(filePath, fileName);
-            imwrite(corrected_images{i}, fullFilePath, 'tif');
-            disp(['Binarized image saved to: ' fullFilePath]);
-        end
+    new_images = {correctedBW, correctedBW2, maskedBW, maskedBW2};
+    new_image_names = {'BW', 'BW2', 'maskedBW', 'maskedBW2'};
+    spheroid_set = extractBetween(day0,1,'_');
+    for i = 1:4
+        % full_image_name = ['Expt', num2str(expt_no), '_', new_image_names{i}, '_Sph', spheroid_set{1}, '.tiff'];
+        full_image_name = [spheroid_set{1}, '_', new_image_names{i}, '_E', num2str(expt_no).tiff'];
+        imwrite(new_images{i}, full_image_name);
+        disp(['Binarized image saved to: ' pwd]);    
     end
 
 
-
-
-    %Save masked images ..................................
-    % Save each image with a unique name in the specified folder
-
-    masked_images = {maskedBW, maskedBW2};
-    for i = 1:2
-        % Prompt the user to select a folder and specify a file name for saving
-        disp(['Save masked image ' num2str(i)])
-        [fileName, filePath] = uiputfile('*.tif', 'Save masked image TIFF Image');
-
-        % Check if the user clicked 'Cancel'
-        if fileName == 0
-            disp('User canceled file saving.');
-        else
-            % Display the selected file name and path
-            disp(['Selected file name: ' fileName]);
-            disp(['Selected file path: ' filePath]);
-            fullFilePath = fullfile(filePath, fileName);
-            imwrite(masked_images{i}, fullFilePath, 'tif');
-            disp(['Masked image saved to: ' fullFilePath]);
-        end
-    end
 
 
 
     %% Save the figures
 
     % Method using the exportgraphics function - (works with MATLAB R2022a)
-    spheroid_set = extractBetween(filename0,1,'_');
-    pdf_name = ['Expt',expt_no, ' binarized masked sph#', spheroid_set{1},' ', condition, '.pdf'];
+    %spheroid_set = extractBetween(day0,1,'_');
+    pdf_name = ['Expt', num2str(expt_no), ' binarized masked sph#', spheroid_set{1},' ', condition, '.pdf'];   
     disp(['Now writing: ',pdf_name]);
     figHandles = flip(findall(0,'Type','figure'),1);
 
@@ -156,6 +131,14 @@ for f = 1:2:numel(files)
     disp('Paused, check on images and pdf in file explorer.')
     disp('When finished type next to continue')
     input('next')
+
+    %  % Go up one levels from the current directory
+    % cd('..');
+    
+    % % Go up two levels from the current directory
+    % cd('..\..');
+    
+
     %---------------------%
 
     
