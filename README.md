@@ -19,10 +19,10 @@ UseQuant_imagesetrocessImages.m to quantify invasion using two sets of images pe
 Pipeline
 Binarizing_imageset_two step.m This script takes in gray scale 8-bit tiff images and automatically binarizes and masks the images. A circular mask is applied around the spheroids for consistency since, in cases of abundant invasion, the rectangular image frame can skew invasion results. Manual image correction is provided as an option in case further image processing is needed. This script is optional since binarizing and masking can be performed manually using FIJI if desired. It is recommended that constrast enhancing is performed before running this script to make automatic binarizing simpler.
 Function tree:
-Binarize_image.m
-Correct_BW.m
-Mask_Image_wCentroid.m
-Find_SpheroidCentroid.m
+  Binarize_image.m
+  Correct_BW.m
+  Mask_Image_wCentroid.m
+  Find_SpheroidCentroid.m
 
 UseQuant_imageset.m to quantify invasion using two sets of images per spheroid: (1) initial and (2) final time points. 
 
@@ -32,15 +32,17 @@ The variables are saved in a ".mat" file and the figures are saved as ".fig" fil
 
 To accomodate automatic file saving, keep track of the spheroids by number and note the number in the beginning of the image name followed by an underscore such as: [Spheroid #]_[...]
 Example: "1_day0_maskedBW_E1.tif"
+
 Function tree:
-Find_Boundary_BWonly.m
-FInd_SpheroidCentroid.m
-FEprops.m
-AlignCentroidsandFindPixelsPOI.m
-CalculateDistances.m
-IntersectionDistance.m
-FIndPixelAngles.m
-PlotPixelDistancesandAngles.m
+  Find_Boundary_BWonly.m
+  FInd_SpheroidCentroid.m
+  FEprops.m
+  AlignCentroidsandFindPixelsPOI.m
+  CalculateDistances.m
+  IntersectionDistance.m
+  FIndPixelAngles.m
+  PlotPixelDistancesandAngles.m
+  
 Additional scripts are provided to compile the ".mat" results obtained in "Quant_imageset.m", if desired. ConsolidateData2.m compiles the data for all the spheroids into one ".mat" file. CompilingResultsMultiExpt.m compiles the data for multiple experiment replicates together into one ".mat" file.
 
 4. PCA_script.mperformes Principle Component Analysis on the spheroid invasion data of one experiment in order to quantify invasion directionality trends. Load a ".mat" file that was saved using "ConsolidateData2.m." The script will transform the persistence speeds along the principle angles as well as calculate the transformed area moment of inertia. The variables are saved in a ".mat" file and the figures are saved as ".fig" files as well as compiled into a pdf document.
