@@ -1,12 +1,30 @@
 %% Image quantification MATLAB script for 3D spheroid migration
-% Rozanne Mungai Billiar Lab; April 2022
-
-% -------------------PART 2----------------------
-%---------- USE ON BINARIZED IMAGES  ------------
-
-% - For calculating all the pixels instead of centroids, uses squares to pass
-% - through the isinterior function more quickly
-% - Calculates the distances of migrating cells mathematically for speed
+% Author: Rozanne W. Mungai 
+% - Billiar Lab, Worcester Polytechnic Institute
+% Created April 2022, Published January 2024
+%
+% ------- PART 2 of image quantification script set ---------
+% 
+% Requirements: Initial and final BINARIZED tiff (.tif) images of multicellular spheroids
+% - To accomodate automatic file saving, keep track of the spheroids by number 
+% and note the number in the beginning of the image name followed by an underscore
+% such as: [Spheroid #]_[...] Example: "1_day0_maskedBW_E1.tif"
+% - For best results, use PART 1 of the script set to obtain binarized and
+% - masked images 
+% - For ease of loading the images, keep the images (of one experiment and one condition) in one folder 
+% - For organization purposes use on one experiment condition at a time
+% 
+% Purpose: Trace the boundary of the initial spheroid and quantify cell invasion 
+% from multicellular spheroids by calculating the following metrics: 
+% - area, distance from inital spheorid center and boundary,
+% - angles, area moment of inertia from center and boundary
+% 
+% Calculations are performed for each pixel past the boundary
+% 
+% Outputs: Calculated data (as .mat file of workspace variables)
+% - figures of quantified data (.fig)
+% - pdf file demonstrating workflow
+% - - each spheroid has a separate file
 
 
 clear ; clc; close all
@@ -32,11 +50,12 @@ disp(['Pixel size #: ' num2str(pixel_size)]);
 % num_days = 2;
 % 
 % %Pixel size of your microscope images
-% % - example: 0.75488 um/pixel
 % pixel_size = 0.75488; %um/pixel
 
 
 %% Set up folder to obtain images
+
+main_folder = pwd;
 
 % Prompt the user to select a folder
 disp('Select a folder to import images.')
@@ -52,20 +71,17 @@ else
     disp(['Folder added to the MATLAB path: ' selected_folder]);
 end
 
-
-
-
 %Get a list of the desired files in the chosen folder
 file_pattern = fullfile(selected_folder, '*.tif');
 files = dir(file_pattern);
 
 
+
 %% Start the loop
 
-for f = 1:2:numel(files)
+for f = 7:2:numel(files)
     
     
-
     %Read through two of the filenames at a time to compare the 
     % day0 and day2 images
     filename0 = files(f).name;
@@ -77,10 +93,13 @@ for f = 1:2:numel(files)
     binarized_day0 = filename0;
     binarized_day2 = filename2;
 
+    
     %% Process images
     
     % Find the boundary for the day0 image (function 1)
-    %[boundary] = Find_Boundary(day0, BW);
+    % - If boundary tracing fails, ensure that image was corrected to 
+    % - remove all stray pixels that could interfere with the function. 
+    % - The edge of the spheorid must be smooth and continuous.
     [boundary] = Find_Boundary_BWonly(binarized_day0);
     
     BW = imread(binarized_day0); BW2 = imread(binarized_day2);
@@ -91,7 +110,7 @@ for f = 1:2:numel(files)
     
     
     % Align the spheroid centroids (function 3)
-    tic %Set a timer for the code
+    tic %Set a timer for the function
     [outer_pixels2, poly_boundary, day2centered_boundary] = AlignCentroidsandFindPixelPOI(boundary,... 
         BW2, centroid_loc, centroid_loc2, pixel_locs2, boundary_pixel_locs2);
     compTime = toc
@@ -182,7 +201,7 @@ for f = 1:2:numel(files)
     figHandles = flip(findall(0,'Type','figure'),1);
     
     cd(selected_folder); cd('..');
-    new_foldername = ['Figs+vars expt', expt_no, ' quantified sph#', spheroid_set{1},' ', condition];
+    new_foldername = ['Figs expt', expt_no, ' quantified sph#', spheroid_set{1},' ', condition];
     new_folderpath = fullfile(pwd, new_foldername);
     
     %cd(selected_folder); cd('..');
@@ -223,9 +242,12 @@ for f = 1:2:numel(files)
     
     
     %% Save the relevant data for further processing
-
+    
+    %cd(new_folderpath);
+    clear i
+    
     disp('Saving relevant workspace variables to file explorer')
-    save(['Vars - expt', expt_no, ' ', condition, ' sph', spheroid_set{1}], ...
+    save(['Vars expt', expt_no, ' ', condition, ' sph', spheroid_set{1}], ...
         'final_pixels', 'Irb', 'Ixb', 'Iyb', 'Irc', 'Ixc', 'Iyc', 'areas', 'areas2',...
         'max_dist', 'median_dist', 'mean_dist', 'speedum_array', 'angles_array')
 
@@ -239,7 +261,7 @@ for f = 1:2:numel(files)
 
 
 close all
-cd(selected_folder)
+cd(main_folder)
 
 
 end
@@ -248,4 +270,5 @@ disp('Finished with all images.')
 disp(' ')
 disp(' ')
 
-
+% ----------------------- END OF PART 2 ----
+    

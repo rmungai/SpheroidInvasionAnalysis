@@ -1,45 +1,42 @@
 %% Image quantification MATLAB script for 3D spheroid migration
 % Rozanne Mungai Billiar Lab; October 2022
-% -------------------PART 5----------------------
-%---------- USE ON COMPILED QUANTIFIED DATA ------------
+% -------------------PART 4----------------------
+%---------- USE ON CONSOLIDATED QUANTIFIED DATA ------------
 % Perform PCA on consilidated data
 
 clear ; clc; close all
 %close all
 
 %% Prompt the user to input a value for a variable ------
-% expt_no = input('What is the experiment number?');
-% condition = input('What is the experiment condition?' , 's');
-% num_days = input('What are the number of days of the experiment?');
-% pixel_size = input('What is the um/pixel ratio of your images?');
+
+expt_no = input('What is the experiment number?');
+condition = input('What is the experiment condition?' , 's');
+num_days = input('What are the number of days of the experiment?');
+pixel_size = input('What is the um/pixel ratio of your images?');
+
+% Display the specified variable value
+disp(['Experiment #: ' num2str(expt_no)]);
+disp(['Condition: ' num2str(condition)]);
+disp(['Number of days: ' num2str(num_days)]);
+disp(['Pixel size #: ' num2str(pixel_size)]);
+
+
+% % State your experiment details ------ %Use if preferred over prompt
 % 
-% % Display the specified variable value
-% disp(['Experiment #: ' num2str(expt_no)]);
-% disp(['Condition: ' num2str(condition)]);
-% disp(['Number of days: ' num2str(num_days)]);
-% disp(['Pixel size #: ' num2str(pixel_size)]);
+% % State the experiment number and condition --------------------
+% expt_no = '9';
+% condition = 'static';
+% 
+% % Experiment duration
+% % - example: Day 0 to Day 4
+% num_days = 4;
+% 
+% %Pixel size of your microscope images
+% pixel_size = 0.75488; %um/pixel
 
 
-% State your experiment details ------ %Use if preferred over prompt
 
-% State the experiment number and condition --------------------
-expt_no = '9';
-condition = 'static';
-
-% Experiment duration
-% - example: Day 0 to Day 4
-num_days = 4;
-
-%Pixel size of your microscope images
-% - example: 0.75488 um/pixel
-pixel_size = 0.75488; %um/pixel
-
-
-% % (!) Load the compiled dynamic and static variables for each cell type
-% load('Vars complied expt 9 static.mat')
-
-
-% Prompt the user to load variables saved from an experiment ----------
+%% Prompt the user to load variables saved from an experiment ----------
 
 % - prompt the user to select a MATLAB file
 disp('Select a MATLAB .mat file to load variables.')
@@ -63,9 +60,12 @@ try
 catch
     disp('Error loading the MATLAB file.');
 end
-% -------------------------------------------------------------------
+
+
+
 
 %% Run PCA function
+
 [principle_angles, principle_speeds, principle_Irb, principle_Ixb, principle_Iyb, transformed_angles, transformed_speeds] = PerformPCA(static_angles, ...
     static_speeds, num_days, pixel_size);
 
@@ -128,4 +128,4 @@ save(['PCA variables expt',  expt_no, ' ', condition, ' compiled'], ...
 disp(' ')
 disp('End of function')
 
-
+% ------------------------------- END OF PART 4 ------------

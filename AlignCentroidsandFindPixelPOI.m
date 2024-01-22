@@ -1,7 +1,7 @@
 %% Image quantification MATLAB script for 3D spheroid migration
 % Rozanne Mungai Billiar Lab; April 2022
 
-function [outer_pixels3, poly_boundary, day3centered_boundary] = AlignCentroidsandFindPixelSampled(boundary, ...
+function [outer_pixels3, poly_boundary, day3centered_boundary] = AlignCentroidsandFindPixelPOI(boundary, ...
     binary_image, centroid_loc, centroid_loc3, pixel_locs, boundary_pixel_locs) 
 
 % This function aligns the spheroid centroids from the different days and finds
@@ -24,7 +24,7 @@ outer_pixels3 = cell(length(pixel_locs), 1);
 disp('Determining points outside of boundary')
 for i = 1:length(boundary_pixel_locs)
 
-    fprintf('On index %i out of %i\n', i, length(pixel_locs))
+    fprintf(' Index %i out of %i\n', i, length(pixel_locs))
 
     %Determine points not in boundary: analyze the element edges first
     %if all(boundary_pixel_locs{i} == 0) || all(boundary_pixel_locs{i} == 1)
@@ -32,11 +32,11 @@ for i = 1:length(boundary_pixel_locs)
     if all(~isinterior(poly_boundary, boundary_pixel_locs{i}))
         pixel_size = size(pixel_locs{i});
         outside_pixel_loc{i} = logical(ones(pixel_size(1),1));
-        disp('outside')
+        %disp('outside') % - for debugging purposes
     elseif all(isinterior(poly_boundary, boundary_pixel_locs{i}))
-        disp('inside')
+        %disp('inside') % - for debugging purposes
     else
-        disp('determining')
+        %disp('determining') % - for debugging purposes
         for j = 1:length(boundary_pixel_locs{i})
             outside_pixel_loc{i} = ~isinterior(poly_boundary, pixel_locs{i}); 
         end
