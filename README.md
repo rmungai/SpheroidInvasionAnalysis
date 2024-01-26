@@ -1,18 +1,18 @@
 # SpheroidInvasionAnalysis
 
 
-**DOI** *(will be entered here when paper is published)*
+**Correspoding manuscript:** "Towards an Objective and High-throughput Quantification Method for Spheroid Invasion Assays" Rozanne W. Mungai, Roger J. Hartman, Grace Jolin, Kevin Piskorowski , and Kristen L. Billiar. **DOI** *(will be entered here when paper is published)*
 
-This repository contains scripts used to batch process images of multicellular spheroids and quantify invasion between two snapshot images. It is intended for cases where the same spheroid is imaged at an initial timepoint (such as Day0, when no invasion has occured) and again imaged at a final timepoint (such as Day 2) to calculate the extent of invasion from the spheroid. Please see the following manuscript for a use-case example:
+This repository contains MATLAB scripts used to batch process images of multicellular spheroids and quantify invasion between two snapshot images. It is intended for cases where the same spheroid is imaged at an initial timepoint (such as Day0, when no invasion has occured) and again imaged at a final timepoint (such as Day 2) to calculate the extent of invasion from the spheroid. Please see the corresponding manuscript for a use-case example:
 
-(Copies of the script are provided in both Python and MATLAB for ease-of-use.) 
+A GUI (for those unfamiliar with programming) and a Python version of these scripts are provided in Python by @rogerh2 for ease-of-use. 
 
 ## **Requirements**
 MATLAB R2021a or later with the image processing toolbox
 
 ## **Components**
 
-(Optional) Binarizing_imageset_two step.m used to autimatically binarized gray scale 8-bit tiff images and apply a circular mask around the image edges. manually adjust contrast raw tif images and embed necessary metadata.
+Binarizing_imageset_two step.m to autimatically binarize gray scale 8-bit .tif images and apply a circular mask around the image edges. 
 
 UseQuant_imagesetrocessImages.m to quantify invasion using two sets of images per spheroid: (1) initial and (2) final time points
 
@@ -21,7 +21,7 @@ UseQuant_imagesetrocessImages.m to quantify invasion using two sets of images pe
 
 ## **Pipeline**
 
-1. Binarizing_imageset_two step.m This script takes in gray scale 8-bit tiff images and automatically binarizes and masks the images. A circular mask is applied around the spheroids for consistency since, in cases of abundant invasion, the rectangular image frame can skew invasion results. Manual image correction is provided as an option in case further image processing is needed. This script is optional since binarizing and masking can be performed manually using FIJI if desired. It is recommended that constrast enhancing is performed before running this script to make automatic binarizing simpler.
+1. Binarizing_imageset_two step.m This script takes in gray scale 8-bit .tif images and automatically binarizes the images. A circular mask is applied around the spheroids for quantification consistency since, in cases of abundant invasion, the rectangular image frame can skew invasion results. Manual image correction is provided as an option in case further image processing is needed. This script is optional since binarizing and masking can be performed manually using FIJI if desired. It is recommended that constrast enhancing is performed before running this script to make automatic binarizing simpler.
 
 Function tree:
   * Binarize_image.m
@@ -31,7 +31,7 @@ Function tree:
 
 2. Use **Quant_imageset.m** to quantify invasion using two sets of images per spheroid: (1) initial and (2) final time points. 
 
-Takes in binarized images and traces the boundary of the Day 0 image and overlays that boundary over the final time point image. The distances and angles of all pixels (aka. cells) at the final time point that have invaded past the boudary are calculated in reference to both the boundary as well as the center of the spheroid (see Figure 1). Next, invasion metrics are calculated: area change, distance and persistence speed from boundary and center, area moment of inertia. 
+Takes in binarized images and traces the boundary of the Day 0 image and overlays that boundary over the final time point image. The distances and angles of all pixels (aka. cells) at the final time point that have invaded past the boudary are calculated in reference to both the boundary as well as the center of the spheroid *(see Figure 1 in corresponding publication)*. Next, invasion metrics are calculated: area change, distance and persistence speed from boundary and center, area moment of inertia. 
 
 The variables are saved in a ".mat" file and the figures are saved as ".fig" files as well as compiled into a pdf document. It is recommended to use the "Binarizing_imageset_two step.m" to generate binarized and circle masked images. In particular, the Day 0 images must not have stray pixels since that can interfere with boundary tracing. 
 
@@ -60,4 +60,4 @@ Department of Biomedical Engineering
 Worcester Polytechnic Institute
 Worcester, Massachusetts, USA
 
-Roger J. Hartman II (rogerh2) is kindly acknowledged for his advice in writing this analysis tool.
+Roger J. Hartman II (rogerh2) is kindly acknowledged for his advice in writing this MATLAB-based analysis tool. 
