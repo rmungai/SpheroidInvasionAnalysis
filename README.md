@@ -44,15 +44,15 @@ The variables are saved in a ".mat" file and the figures are saved as ".fig" fil
 To accomodate automatic file saving, keep track of the spheroids by number and note the number in the beginning of the image name followed by an underscore such as: [Spheroid #]_[...]
 Example: "1_day0_maskedBW_E1.tif"
 
-  Function tree:
-    * Find_Boundary_BWonly.m
-    * Find_SpheroidCentroid.m
-    * FEprops.m
-    * AlignCentroidsandFindPixelsPOI.m
-    * CalculateDistances.m
-    * IntersectionDistance.m
-    * FIndPixelAngles.m
-    * PlotPixelDistancesandAngles.m
+Function tree:
+  * Find_Boundary_BWonly.m
+  * Find_SpheroidCentroid.m
+  * FEprops.m
+  * AlignCentroidsandFindPixelsPOI.m
+  * CalculateDistances.m
+  * IntersectionDistance.m
+  * FIndPixelAngles.m
+  * PlotPixelDistancesandAngles.m
 
  It is recommended to run this script on images from one experiment condition at a time for easier organization.
   
