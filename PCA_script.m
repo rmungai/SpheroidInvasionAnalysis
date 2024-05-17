@@ -37,6 +37,9 @@ disp(['Pixel size #: ' num2str(pixel_size)]);
 
 %% Prompt the user to load variables saved from an experiment ----------
 
+% - - This script is designed to work on the variables that 
+% - - you saved using "ConsolidateData.m"
+
 % - prompt the user to select a MATLAB file
 disp('Select a MATLAB .mat file to load variables.')
 [filename0, filePath] = uigetfile('*.mat', 'Select a MATLAB file');
@@ -76,15 +79,17 @@ end
 
 %% Run PCA function
 
+%If this function breaks, check that you are using the variables saved in
+%ConsolidateData.m"
 [principal_angles, mean_transformed_dist, principal_Irb, principal_Ixb, principal_Iyb, ...
     transformed_angles, transformed_dist_um] = PerformPCA(static_angles, static_outerdist_um, pixel_size);
 
 mt_dist_difference = mean_transformed_dist(:,1)-mean_transformed_dist(:,2);
 
-%---------------------%
-disp('Paused, check on figures and type next to proceed to saving figures and variables.')
-input('next')
-%---------------------%
+% %---------------------%
+% disp('Paused, check on figures and type next to proceed to saving figures and variables.')
+% input('next')
+% %---------------------%
 
 
 %% Save data
@@ -102,7 +107,7 @@ fig_handles = flip(findall(0,'Type','figure'),1);
 for i = 1:numel(fig_handles)
     
     % Specify the file name for the saved figure
-    filename0 = ['PCA Fig' num2str(i) ' expt', num2str(expt_no), ' ', condition];
+    filename0 = ['PCA expt', num2str(expt_no), ' Fig' num2str(i) , ' ', condition];
 
     % Full file path including the folder, file name, and extension
     full_filepath = fullfile(new_folderpath, [filename0, '.fig']);
@@ -114,6 +119,10 @@ for i = 1:numel(fig_handles)
 end
 
 
+%Example of how to save the figures as png files 
+% (To do: uncomment, click on the figure you want to save, then replace with preferred name and run the line)
+
+%saveas(gcf,'2_day2_PCA_14S_nopostcontrol.png')
 
 
 % (2) Save figures into a pdf file .................
