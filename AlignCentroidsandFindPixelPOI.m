@@ -1,16 +1,16 @@
 %% Image quantification MATLAB script for 3D spheroid migration
 % Rozanne Mungai Billiar Lab; April 2022
 
-function [outer_pixels3, poly_boundary, day3centered_boundary] = AlignCentroidsandFindPixelPOI(boundary, ...
-    binary_image, centroid_loc, centroid_loc3, pixel_locs, boundary_pixel_locs) 
+function [outer_pixels2, poly_boundary, centered_boundary] = AlignCentroidsandFindPixelPOI(boundary, ...
+    binary_image, centroid_loc, centroid_loc2, pixel_locs, boundary_pixel_locs) 
 
 % This function aligns the spheroid centroids from the different days and finds
 % - all the pixel points outside the day 0 boundary (the points of interest - POI)
 % - Calculate the centroids for the connected components in the image 
 
 %% Move the day 0 boundary to have the centroid in the day 3 image
-%day3centered_boundary = [boundary(:,2), boundary(:,1)] - centroid_loc + centroid_loc3;
-day3centered_boundary = boundary - centroid_loc + centroid_loc3;
+%centered_boundary = [boundary(:,2), boundary(:,1)] - centroid_loc + centroid_loc3;
+centered_boundary = boundary - centroid_loc + centroid_loc2;
 
 
 %% Find the pixel points outside of the centered boundary
@@ -18,10 +18,12 @@ day3centered_boundary = boundary - centroid_loc + centroid_loc3;
 %-- Includes a mask to filter out points that are too small to be actual cells
 
 % poly_boundary = polyshape(day3centered_boundary(:,2), day3centered_boundary(:,1));
-poly_boundary = polyshape(day3centered_boundary(:,1), day3centered_boundary(:,2));
+poly_boundary = polyshape(centered_boundary(:,1), centered_boundary(:,2));
 outside_pixel_loc = cell(length(pixel_locs), 1);
-outer_pixels3 = cell(length(pixel_locs), 1);
+outer_pixels2 = cell(length(pixel_locs), 1);
+
 disp('Determining points outside of boundary')
+
 for i = 1:length(boundary_pixel_locs)
 
     fprintf(' Index %i out of %i\n', i, length(pixel_locs))
@@ -43,9 +45,8 @@ for i = 1:length(boundary_pixel_locs)
         
     end
 
-    outer_pixels3{i} = pixel_locs{i}(outside_pixel_loc{i},:);
+    outer_pixels2{i} = pixel_locs{i}(outside_pixel_loc{i},:);
     
-
     %areas_mask = areas>5;
     %total_masked = logical(areas_mask.*outside_pixel_loc{i}); %logical makes it a booleans so that we can index with it
     %outer_pixels3 = pixel_locs{i}(total_masked,:);
@@ -56,7 +57,7 @@ end
 
 %Remove the empty components from the cell (these are from the interior
 %pixels)
-outer_pixels3 = outer_pixels3(~cellfun('isempty', outer_pixels3'));
+outer_pixels2 = outer_pixels2(~cellfun('isempty', outer_pixels2'));
 
 
 
@@ -73,15 +74,16 @@ outer_pixels3 = outer_pixels3(~cellfun('isempty', outer_pixels3'));
 % title ('Are the boundary points and polyline the same?')
 
 
+% Display the binary images with the uncentered and centered boundaries
 
-%Display the binary images with the uncentered and centered boundaries
+% 
 figure
 imshow(binary_image)
 hold on
 % plot(boundary(:,2), boundary(:,1), 'g', 'LineWidth', 3);
 plot(boundary(:,1), boundary(:,2), 'g', 'LineWidth', 3);
 plot(centroid_loc(1), centroid_loc(2), 'g*')
-plot(centroid_loc3(1), centroid_loc3(2), 'b*')
+plot(centroid_loc2(1), centroid_loc2(2), 'b*')
 hold off
 title('uncentered boundary')
 
@@ -89,15 +91,15 @@ title('uncentered boundary')
 figure
 imshow(binary_image)
 hold on
-plot(day3centered_boundary(:,1), day3centered_boundary(:,2), 'g', 'LineWidth', 3);
-plot(centroid_loc3(1), centroid_loc3(2), 'b*')
+plot(centered_boundary(:,1), centered_boundary(:,2), 'g', 'LineWidth', 3);
+plot(centroid_loc2(1), centroid_loc2(2), 'b*')
 title('centered boundary and outer pixels')
 
-for i = 1:length(outer_pixels3)
-    if isempty(outer_pixels3{i})
+for i = 1:length(outer_pixels2)
+    if isempty(outer_pixels2{i})
         continue
     else
-        plot(outer_pixels3{i}(:,1),outer_pixels3{i}(:,2), 'c.')
+        plot(outer_pixels2{i}(:,1),outer_pixels2{i}(:,2), 'c.')
         %plot(outer_pixels3{i}(:,1),outer_pixels3{i}(:,2), '.') %for debugging
     end 
 end

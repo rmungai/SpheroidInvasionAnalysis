@@ -150,9 +150,8 @@ for f = 7:2:numel(files)
 %     %---------------------%
         
     % Plot the distances and angles vs the areas (function 6)
-   [final_pixels, Irb, Ixb, Iyb,  Irc, Ixc, Iyc, max_dist, median_dist, mean_dist, ...
-       speedum_array, angles_array] = PlotPixelDistancesandAngles(outer_distance_magnitude, outer_distances_xy, ...
-       full_distance_magnitude, full_distances_xy, angles, num_days, pixel_size);
+   [final_pixels, Irb, Ixb, Iyb,  Irc, Ixc, Iyc, max_dist, median_dist, mean_dist, outerdistance_lengths_um, speedum_array, ...
+    angles_array] = PlotPixelDistancesandAngles(outer_distance_magnitude, outer_distances_xy, full_distance_magnitude, full_distances_xy, angles, num_days, pixel_size);
 
 
     
@@ -165,6 +164,32 @@ for f = 7:2:numel(files)
     disp(' ')
 
 
+    % Create a new folder with a unique name
+    spheroid_set = extractBetween(filename0,1,'_'); %requires that images start with the spheroid# and underscore
+    figHandles = flip(findall(0,'Type','figure'),1);
+    
+    cd(selected_folder); cd('..');
+    new_foldername = ['Figs expt', expt_no, ' quantified sph#', spheroid_set{1},' ', condition];
+    new_folderpath = fullfile(pwd, new_foldername);
+    
+    %cd(selected_folder); cd('..');
+    mkdir(new_foldername);
+
+    % Save each figure with a unique file name in the specified folder
+    for i = 1:numel(figHandles)
+        % Specify the file name for the saved figure
+        fileName = ['Fig' num2str(i) ' expt', expt_no, ' ', condition, ' quantified sph#', spheroid_set{1}];
+
+        % Full file path including the folder, file name, and extension
+        fullFilePath = fullfile(new_folderpath, [fileName, '.fig']);
+
+        % Save the figure as a .fig file (MATLAB figure file)
+        saveas(i, fullFilePath, 'fig');
+
+        disp(['Figure ' num2str(i) ' saved to: ' fullFilePath]);
+    end
+    
+    
     % % Prompt the user to select a folder for saving the figures
     % selected_folder = uigetdir('C:\', 'Select a folder for saving the figures');
     % 
@@ -194,35 +219,8 @@ for f = 7:2:numel(files)
     % end
 
 
-    
-      
-    % Create a new folder with a unique name
-    spheroid_set = extractBetween(filename0,1,'_'); %requires that images start with the spheroid# and underscore
-    figHandles = flip(findall(0,'Type','figure'),1);
-    
-    cd(selected_folder); cd('..');
-    new_foldername = ['Figs expt', expt_no, ' quantified sph#', spheroid_set{1},' ', condition];
-    new_folderpath = fullfile(pwd, new_foldername);
-    
-    %cd(selected_folder); cd('..');
-    mkdir(new_foldername);
 
-    % Save each figure with a unique file name in the specified folder
-    for i = 1:numel(figHandles)
-        % Specify the file name for the saved figure
-        fileName = ['Fig' num2str(i) ' expt', expt_no, ' ', condition, ' quantified sph#', spheroid_set{1}];
 
-        % Full file path including the folder, file name, and extension
-        fullFilePath = fullfile(new_folderpath, [fileName, '.fig']);
-
-        % Save the figure as a .fig file (MATLAB figure file)
-        saveas(i, fullFilePath, 'fig');
-
-        disp(['Figure ' num2str(i) ' saved to: ' fullFilePath]);
-    end
-    
-    
-        
     % (2) Save figures into a pdf file .................
     cd(new_folderpath);
     cd('..')
@@ -248,8 +246,8 @@ for f = 7:2:numel(files)
     
     disp('Saving relevant workspace variables to file explorer')
     save(['Vars expt', expt_no, ' ', condition, ' sph', spheroid_set{1}], ...
-        'final_pixels', 'Irb', 'Ixb', 'Iyb', 'Irc', 'Ixc', 'Iyc', 'areas', 'areas2',...
-        'max_dist', 'median_dist', 'mean_dist', 'speedum_array', 'angles_array')
+        'files', 'final_pixels', 'Irb', 'Ixb', 'Iyb', 'Irc', 'Ixc', 'Iyc', 'areas', 'areas2',...
+        'max_dist', 'median_dist', 'mean_dist', 'outerdistance_lengths_um', 'speedum_array', 'angles_array')
 
 
    
