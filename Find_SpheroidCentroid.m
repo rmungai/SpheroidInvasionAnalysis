@@ -7,8 +7,9 @@ function [spheroid_centroid, spheroid_area, FE_centroids, rprops_areas, pixel_lo
 
 %function [weighted_centroid, rprops_centroids, spheroid_area, centroids, areas, pixel_locs, boundary_pixel_locs] = Find_SpheroidCentroid(binary_image)
 
-%%Show the image info in a table including calculating
-% the centroids for the connected components in the image
+%Show the image info in a table 
+% including calculating the centroids of the 
+% connected components in the image
 stats = regionprops('table',binary_image,'Centroid', 'Area', 'PixelList');
 [image_stats] = FEprops(binary_image); 
 
