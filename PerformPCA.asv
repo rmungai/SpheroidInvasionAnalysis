@@ -19,7 +19,7 @@ mean_transformed_dist = zeros(length(distances),2);
 transformed_angles = cell(size(distances));
 transformed_dist_um = cell(size(distances));
 transformed_dist = cell(size(distances));
-transformed_dist_xy = cell(size(distances));
+transformed_dist = cell(size(distances));
 
 Irb = zeros(length(distances),1);
 Ixb = zeros(length(distances),1);

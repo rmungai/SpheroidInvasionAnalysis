@@ -95,12 +95,12 @@ text(xt, y, labels, 'HorizontalAlignment','center', 'VerticalAlignment','bottom'
 
 
 
-%% Plot distance from center and boundary (mm)
+%% Plot distance from center and boundary
 
 % Plot the distances from center vs angle values in a polar plot-----------
 figure
-polarplot(angles_array, centerdistance_lengths_um*1e3,'.')
-title (["Distances from spheroid center (mm) vs","migration angle"])
+polarplot(angles_array, centerdistance_lengths_um,'.')
+title (["Distances from spheroid center (um) vs","migration angle"])
 
 % - Set figure size: 
 % - https://www.mathworks.com/help/matlab/ref/figure.html#buich1u-1_sep_shared-Position
@@ -109,35 +109,86 @@ set(gca,'Fontname','arial', 'FontSize',14, 'OuterPosition', [0 0.2 1 0.75]);
 
 %Plot the boundary distance vs angle values in a polar plot-----------------
 figure 
-polarplot(angles_array, outerdistance_lengths*1e3,'.')
-title (["Distances from spheroid boundary (mm) vs ","migration angle"])
+polarplot(angles_array, outerdistance_lengths,'.')
+title (["Distances from spheroid boundary (um) vs ","migration angle"])
 set(gca,'Fontname','arial', 'FontSize',14, 'OuterPosition', [0 0.2 1 0.75]);
 
 
 
-% %% Persistance speed (um/min) from boundary
-% 
-% %speed = outer_distance_magnitude/num_days;
-% speed = cell(length(outer_distance_magnitude),1);
-% speed_um = cell(length(outer_distance_magnitude),1);
-% for i = 1:length(outer_distance_magnitude)
-%     speed{i} = outer_distance_magnitude{i} / (num_days*24*60); 
-%     speed_um{i} = speed{i}.*pixel_size;
+%% Persistance speed (um/min) from boundary
+ 
+%speed = outer_distance_magnitude/num_days;
+speed = cell(length(outer_distance_magnitude),1);
+speed_um = cell(length(outer_distance_magnitude),1);
+for i = 1:length(outer_distance_magnitude)
+    speed{i} = outer_distance_magnitude{i} / (num_days*24*60); 
+    speed_um{i} = speed{i}.*pixel_size;
+end
+
+speedum_array = (outerdistance_lengths_um) / (num_days*24*60); %um/min
+
+
+% speed_array = speed{1};
+% for i = 2:length(speed)
+%     speed_array_i = speed{i};
+%     speed_array = [speed_array; speed_array_i];
 % end
 % 
-% speedum_array = (outerdistance_lengths_um) / (num_days*24*60); %um/min
-% 
-% 
-% %Plot the persistant speed vs angle values in a polar plot----------------
-% %---essentially the same as distance plot
 % figure
-% polarplot(angles_array, speedum_array, '.') 
-% title ('Persistence speed (um/min) vs migration angle')
-% 
-% %Set figure size: 
-% % - https://www.mathworks.com/help/matlab/ref/figure.html#buich1u-1_sep_shared-Position
-% set(gca,'Fontname','arial', 'FontSize',14, 'OuterPosition', [0 0.2 1 0.75]);
+% polarplot(angles_array, speed_array, '.') 
+% title ('Persistance speed (pixels/min) vs migration angle')
 
+
+% speedum_array = speed_um{1};
+% for i = 2:length(speed_um)
+%     speedum_array_i = speed_um{i};
+%     speedum_array = [speedum_array; speedum_array_i];
+% end
+
+
+%Plot the persistant speed vs angle values in a polar plot----------------
+%---essentially the same as distance plot
+figure
+polarplot(angles_array, speedum_array, '.') 
+title ('Persistence speed (um/min) vs migration angle')
+
+%Set figure size: 
+% - https://www.mathworks.com/help/matlab/ref/figure.html#buich1u-1_sep_shared-Position
+set(gca,'Fontname','arial', 'FontSize',14, 'OuterPosition', [0 0.2 1 0.75]);
+
+
+% for i = 1:length(outer_pixels)
+%     plot(outer_pixels{i}(:,1),outer_pixels{i}(:,2), 'b.', 'LineWidth', 3)
+%     plot(boundary_intersect{i}(:,1), boundary_intersect{i}(:,2), 'rx', 'LineWidth', 3)
+%     %plot(mxb, myb, 'rx', 'LineWidth', 3)
+%     for j = 1:200:length(outer_pixels{i}(:,1))
+%         %plot([centroid_loc(1), outer_pixels{i}(j,1)], [centroid_loc(2), outer_pixels{i}(j,2)], 'c')
+%         plot([boundary_intersect{i}(j,1), outer_pixels{i}(j,1)], [boundary_intersect{i}(j,2), outer_pixels{i}(j,2)], 'c')
+%     end
+%     plot(centroid_loc(1), centroid_loc(2), 'rx', 'LineWidth', 3)
+% end
+
+
+% %Plot the angle values in a histogram -----------------------------------
+% figure
+% subplot(2,1,1)
+% % - histogram(angles,20)
+% histogram(final_centroids_um(:,3),20);
+% title('Angles histogram')
+% xlabel('angles (degrees)')
+% ylabel('frequency')
+% xticks(0:45:360);
+% 
+% %Plot the persistant speed vs angle values as points -------------------------
+% %subplot(2,1,2)
+% % - plot(outer_distance_magnitude/num_days, areas_filtered)
+% scatter(final_centroids_um(:,3), speed_um) 
+% title ('Persistance speed vs migration angle')
+% xlabel('angle (degrees)')
+% ylabel('speed (um/min)')
+% xlim([0 360])
+% xticks(0:45:360);
+% grid on
 
 
 
@@ -189,16 +240,16 @@ Iyc = sum(full_distances_xy_array(:,1).^2 * a)
 
 
 
-%Plot the moment of inertia values in a bar graph (mm^4)--------------
+%Plot the moment of inertia values in a bar graph--------------
 % - Moment from Spheroid Center .....................
 figure
 x = categorical({'Ir', 'Ix', 'Iy'});
 x = reordercats(x,{'Ir', 'Ix', 'Iy'});
 y = [Irc, Ixc, Iyc];
-bar(x, y.*(pixel_size*1e3)^4)
+bar(x, y.*(pixel_size)^4)
 
 title('Moment of inertia from spheroid center')
-ylabel('Moment (mm^4)')
+ylabel('Moment (um^4)')
 set(gca,'Fontname','arial', 'FontSize',14);
 
 %Add values on top of the bars
@@ -211,10 +262,10 @@ figure
 x = categorical({'Ir', 'Ix', 'Iy'});
 x = reordercats(x,{'Ir', 'Ix', 'Iy'});
 y = [Irb, Ixb, Iyb];
-bar(x, y.*(pixel_size*1e3)^4)
+bar(x, y.*(pixel_size)^4)
 
 title('Moment of inertia from spheroid boundary')
-ylabel('Moment (mm^4)')
+ylabel('Moment (um^4)')
 set(gca,'Fontname','arial', 'FontSize',14);
 
 %Add values on top of the bars
