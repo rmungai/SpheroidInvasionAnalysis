@@ -58,7 +58,8 @@ main_folder = pwd;
 % Prompt the user to select the folder that contains the grayscale 8-bit
 % images for loading
 disp('Select a folder to import images.')
-selectedFolder = uigetdir('C:\', 'Select a folder');
+% selectedFolder = uigetdir('C:\', 'Select a folder');
+selectedFolder = uigetdir('Select a folder');
 
 % Check if the user clicked 'Cancel'
 if selectedFolder == 0
@@ -77,10 +78,12 @@ files = dir(filePattern);
 % Create a new folder for saving new binarized images
 % newFolderName = 'Binarized images';
 % newFolderPath = fullfile(selectedFolder, newFolderName);
-new_image_folder = ['Binarized',  '_E', num2str(expt_no), '_', condition];
+new_image_folder = ['Binarized 0.28T',  '_E', num2str(expt_no), '_', condition];
+%new_image_folder = ['Binarized',  '_E', num2str(expt_no), '_', condition];
 mkdir(new_image_folder);
 
-% Add the folder to the MATLAB path
+% Add the folders to the MATLAB path
+addpath(selectedFolder);
 addpath(new_image_folder);
 
 
@@ -129,7 +132,8 @@ for f = 1:2:numel(files)
     %Save binarized images ..................................
     % Save each image with a unique name in the specified folder
     new_images = {correctedBW, correctedBW2, maskedBW, maskedBW2};
-    new_image_names = {'BW1', 'BW2', 'maskedBW1', 'maskedBW2'};
+    %new_image_names = {'BW1', 'BW2', 'maskedBW1', 'maskedBW2'};
+    new_image_names = {'BW1 0.28T', 'BW2 0.28T', 'maskedBW1 0.28T', 'maskedBW2 0.28T'};
 
     %Automatically rename images
     % - This requires that the grayscale images were already named with the 
@@ -154,7 +158,8 @@ for f = 1:2:numel(files)
     cd(main_folder)
 
     % Method using the exportgraphics function - (works with MATLAB R2022a+)
-    pdf_name = ['Expt', num2str(expt_no), ' binarized masked sph#', spheroid_set{1},' ', condition, '.pdf'];   
+    pdf_name = ['Expt', num2str(expt_no), ' binarized masked 0.28T sph#', spheroid_set{1},' ', condition, '.pdf']; 
+     %pdf_name = ['Expt', num2str(expt_no), ' binarized masked sph#', spheroid_set{1},' ', condition, '.pdf'];   
     disp(['Now writing: ',pdf_name]);
     figHandles = flip(findall(0,'Type','figure'),1);
 
@@ -166,9 +171,9 @@ for f = 1:2:numel(files)
 
     %---------------------%
 
-    disp('Paused, check on images and pdf in file explorer.')
-    disp('When finished type next to continue')
-    input('next')
+    %disp('Paused, check on images and pdf in file explorer.')
+    %disp('When finished type next to continue')
+    %input('next')
     
     %---------------------%
 
