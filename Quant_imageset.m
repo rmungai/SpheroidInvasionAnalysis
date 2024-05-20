@@ -59,7 +59,7 @@ main_folder = pwd;
 
 % Prompt the user to select a folder
 disp('Select a folder to import images.')
-selected_folder = uigetdir('C:\', 'Select a folder');
+selected_folder = uigetdir('Select a folder');
 
 % Check if the user clicked 'Cancel'
 if selected_folder == 0
