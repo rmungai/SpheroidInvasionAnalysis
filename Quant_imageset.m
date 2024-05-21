@@ -79,7 +79,7 @@ files = dir(file_pattern);
 
 %% Start the loop
 
-for f = 7:2:numel(files)
+for f = 1:2:numel(files)
     
     
     %Read through two of the filenames at a time to compare the 
@@ -128,7 +128,7 @@ for f = 7:2:numel(files)
     % end
     
     
-    %% Calculate distances and angles
+    % Calculate distances and angles ---------------------
     
     % Find the distance of the outer centroids to the center spheroid centroid and to the boundary (function 4)
     tic
@@ -150,13 +150,13 @@ for f = 7:2:numel(files)
 %     %---------------------%
         
     % Plot the distances and angles vs the areas (function 6)
-   [final_pixels, Irb, Ixb, Iyb,  Irc, Ixc, Iyc, max_dist, median_dist, mean_dist, outerdistance_lengths_um, speedum_array, ...
-    angles_array] = PlotPixelDistancesandAngles(outer_distance_magnitude, outer_distances_xy, full_distance_magnitude, full_distances_xy, angles, num_days, pixel_size);
+   [final_pixels, Irb, Ixb, Iyb,  Irc, Ixc, Iyc, max_dist, median_dist, mean_dist, outerdistance_lengths_um, ...
+    angles_array] = PlotPixelDistancesandAngles(outer_distance_magnitude, outer_distances_xy, full_distance_magnitude, full_distances_xy, angles, pixel_size);
 
 
     
     
-    %% Save the figures  
+    % Save the figures  ------------------
 
     
     % (1) Save as matlab figures ...................
@@ -239,7 +239,7 @@ for f = 7:2:numel(files)
 
     
     
-    %% Save the relevant data for further processing
+    % Save the relevant data for further processing -------------
     
     %cd(new_folderpath);
     clear i
@@ -247,7 +247,7 @@ for f = 7:2:numel(files)
     disp('Saving relevant workspace variables to file explorer')
     save(['Vars expt', expt_no, ' ', condition, ' sph', spheroid_set{1}], ...
         'files', 'final_pixels', 'Irb', 'Ixb', 'Iyb', 'Irc', 'Ixc', 'Iyc', 'areas', 'areas2',...
-        'max_dist', 'median_dist', 'mean_dist', 'outerdistance_lengths_um', 'speedum_array', 'angles_array')
+        'max_dist', 'median_dist', 'mean_dist', 'outerdistance_lengths_um', 'angles_array')
 
 
    
@@ -257,7 +257,7 @@ for f = 7:2:numel(files)
 %     input('next')
 %     %---------------------%
 
-
+%%
 close all
 cd(main_folder)
 

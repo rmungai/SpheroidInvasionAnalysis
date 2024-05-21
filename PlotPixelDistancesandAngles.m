@@ -1,8 +1,8 @@
 %% Image quantification MATLAB script for 3D spheroid migration
 % Rozanne Mungai Billiar Lab; April 2022
 
-function [final_pixels, Irb, Ixb, Iyb,  Irc, Ixc, Iyc, max_dist, median_dist, mean_dist, outerdistance_lengths_um, speedum_array, ...
-    angles_array] = PlotPixelDistancesandAngles(outer_distance_magnitude, outer_distances_xy, full_distance_magnitude, full_distances_xy, angles, num_days, pixel_size)
+function [final_pixels, Irb, Ixb, Iyb,  Irc, Ixc, Iyc, max_dist, median_dist, mean_dist, outerdistance_lengths_um, ...
+    angles_array] = PlotPixelDistancesandAngles(outer_distance_magnitude, outer_distances_xy, full_distance_magnitude, full_distances_xy, angles, pixel_size)
 %This function reads in the outer centroid areas (filtered to remove small particles) as well as 
 % their distances to the boundary and the angles from a horizontal line.
 % distx: distance value from center of spheroid to the migrating cell in x-direction
@@ -99,7 +99,7 @@ text(xt, y, labels, 'HorizontalAlignment','center', 'VerticalAlignment','bottom'
 
 % Plot the distances from center vs angle values in a polar plot-----------
 figure
-polarplot(angles_array, centerdistance_lengths_um*1e3,'.')
+polarplot(angles_array, centerdistance_lengths_um/1e3,'.')
 title (["Distances from spheroid center (mm) vs","migration angle"])
 
 % - Set figure size: 
@@ -109,13 +109,14 @@ set(gca,'Fontname','arial', 'FontSize',14, 'OuterPosition', [0 0.2 1 0.75]);
 
 %Plot the boundary distance vs angle values in a polar plot-----------------
 figure 
-polarplot(angles_array, outerdistance_lengths*1e3,'.')
+polarplot(angles_array, outerdistance_lengths/1e3,'.')
 title (["Distances from spheroid boundary (mm) vs ","migration angle"])
 set(gca,'Fontname','arial', 'FontSize',14, 'OuterPosition', [0 0.2 1 0.75]);
 
 
 
 % %% Persistance speed (um/min) from boundary
+% % - If desired as an output, add to function call
 % 
 % %speed = outer_distance_magnitude/num_days;
 % speed = cell(length(outer_distance_magnitude),1);
@@ -144,7 +145,7 @@ set(gca,'Fontname','arial', 'FontSize',14, 'OuterPosition', [0 0.2 1 0.75]);
 
 % %///////////////////////////////////////////////////////////////////////
 %///////////////////////////////////////////////////////////////////////
-%Calculate the area moment of inertia from the boundary ---------------
+%Calculate the area moment of inertia from the boundary in pixels ---------
 % - Iro = sum((outer_distance_mag)^2 * 1):
 % - - - polar movement from boundary
 % - Ixo = sum((outer_distance_y)^2 * 1):
@@ -167,7 +168,7 @@ Ixb = sum(outer_distances_xy_array(:,2).^2 * a)
 Iyb = sum(outer_distances_xy_array(:,1).^2 * a)
 
 
-%Calculate the area moment of inertia from the spheroid center-----------------
+%Calculate the area moment of inertia from the spheroid center in pixels --------
 % - Ir = sum((distance_mag)^2 * 1); polar movement from center
 % - Ix = sum((distance_y)^2 * 1); y-dir movement from x axis
 % - Iy = sum((distance_x)^2 * 1); x-dir movement from y-axis
@@ -195,7 +196,7 @@ figure
 x = categorical({'Ir', 'Ix', 'Iy'});
 x = reordercats(x,{'Ir', 'Ix', 'Iy'});
 y = [Irc, Ixc, Iyc];
-bar(x, y.*(pixel_size*1e3)^4)
+bar(x, y.*(pixel_size/1e3)^4)
 
 title('Moment of inertia from spheroid center')
 ylabel('Moment (mm^4)')
@@ -211,7 +212,7 @@ figure
 x = categorical({'Ir', 'Ix', 'Iy'});
 x = reordercats(x,{'Ir', 'Ix', 'Iy'});
 y = [Irb, Ixb, Iyb];
-bar(x, y.*(pixel_size*1e3)^4)
+bar(x, y.*(pixel_size/1e3)^4)
 
 title('Moment of inertia from spheroid boundary')
 ylabel('Moment (mm^4)')
@@ -223,7 +224,7 @@ xt = get(gca, 'XTick');
 text(xt, y, labels, 'HorizontalAlignment','center', 'VerticalAlignment','bottom')
 
 
-final_pixels = table(outer_distance_magnitude, outer_distances_xy, full_distance_magnitude, full_distances_xy, speed, speed_um, angles);
+final_pixels = table(outer_distance_magnitude, outer_distances_xy, full_distance_magnitude, full_distances_xy, angles);
 
 end
 
