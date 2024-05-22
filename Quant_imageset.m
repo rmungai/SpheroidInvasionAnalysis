@@ -106,13 +106,15 @@ for f = 1:2:numel(files)
 
     % Find the centroid of the spheroid clump (function 2)
     [centroid_loc, spheroid_area, centroids, areas, pixel_locs, boundary_pixel_locs] = Find_SpheroidCentroid(BW);
-    [centroid_loc2, spheroid_area2, centroids2, areas2, pixel_locs2, boundary_pixel_locs2] = Find_SpheroidCentroid(BW2);
+    [centroid_loc2, spheroid_area2, FEcentroids2, pixel_locs2, boundary_pixel_locs2, areas2, blob_centroids2] = FindSpheroidCentroidNucleiObjects(BW2);
     
     
     % Align the spheroid centroids (function 3)
     tic %Set a timer for the function
-    [outer_pixels2, poly_boundary, day2centered_boundary] = AlignCentroidsandFindPixelPOI(boundary,... 
-        BW2, centroid_loc, centroid_loc2, pixel_locs2, boundary_pixel_locs2);
+    [outer_centroids2, poly_boundary, day2centered_boundary] = AlignCentroidsandFindBlobPOI(boundary,... 
+        BW2, centroid_loc, centroid_loc2, blob_centroids2, boundary_pixel_locs2);
+    % [outer_pixels2, poly_boundary, day2centered_boundary] = AlignCentroidsandFindPixelPOI(boundary,... 
+    %     BW2, centroid_loc, centroid_loc2, pixel_locs2, boundary_pixel_locs2);
     compTime = toc
     
 
@@ -134,13 +136,13 @@ for f = 1:2:numel(files)
     tic
     disp('Calculating distances to center and boundary')
     [outer_distance_magnitude, outer_distances_xy, full_distance_magnitude, full_distances_xy, ...
-        boundary_intersect, horizontal_line]  = CalculateDistances(outer_pixels2, centroid_loc2, day2centered_boundary, BW2);    
+        boundary_intersect, horizontal_line]  = CalculateDistancesBlobs(outer_centroids2, centroid_loc2, day2centered_boundary, BW2);    
      
 
 
     % Find the angle between the distance line and a line at x = 0 (function 5)
     % - Plots just a few pixels as an example
-    [angles] = FindPixelAngles(BW2, outer_pixels2, centroid_loc2, outer_distances_xy, day2centered_boundary, horizontal_line);
+    [angles] = FindBlobAngles(BW2, outer_centroids2, centroid_loc2, outer_distances_xy, day2centered_boundary, horizontal_line);
     
     compTime2 = toc 
     
@@ -169,7 +171,7 @@ for f = 1:2:numel(files)
     figHandles = flip(findall(0,'Type','figure'),1);
     
     cd(selected_folder); cd('..');
-    new_foldername = ['Figs expt', expt_no, ' quantified sph#', spheroid_set{1},' ', condition];
+    new_foldername = ['Figs expt', expt_no, ' quantified centroids sph#', spheroid_set{1},' ', condition];
     new_folderpath = fullfile(pwd, new_foldername);
     
     %cd(selected_folder); cd('..');
@@ -178,7 +180,7 @@ for f = 1:2:numel(files)
     % Save each figure with a unique file name in the specified folder
     for i = 1:numel(figHandles)
         % Specify the file name for the saved figure
-        fileName = ['Fig' num2str(i) ' expt', expt_no, ' ', condition, ' quantified sph#', spheroid_set{1}];
+        fileName = ['Fig' num2str(i) ' expt', expt_no, ' ', condition, ' quantified centroids sph#', spheroid_set{1}];
 
         % Full file path including the folder, file name, and extension
         fullFilePath = fullfile(new_folderpath, [fileName, '.fig']);
@@ -226,7 +228,7 @@ for f = 1:2:numel(files)
     cd('..')
 
     % Method using the exportgraphics function (works with MATLAB R2022a)
-    pdf_name = ['Expt', expt_no, ' quantified sph#', spheroid_set{1},' ', condition, '.pdf'];
+    pdf_name = ['Expt', expt_no, ' quantified centroids sph#', spheroid_set{1},' ', condition, '.pdf'];
     disp(['Now writing: ',pdf_name]);
 
     exportgraphics(figHandles(1),pdf_name)
@@ -245,7 +247,7 @@ for f = 1:2:numel(files)
     clear i
     
     disp('Saving relevant workspace variables to file explorer')
-    save(['Vars expt', expt_no, ' ', condition, ' sph', spheroid_set{1}], ...
+    save(['Vars expt', expt_no, ' centroids ', condition, ' sph', spheroid_set{1}], ...
         'files', 'final_pixels', 'Irb', 'Ixb', 'Iyb', 'Irc', 'Ixc', 'Iyc', 'areas', 'areas2',...
         'max_dist', 'median_dist', 'mean_dist', 'outerdistance_lengths_um', 'angles_array')
 

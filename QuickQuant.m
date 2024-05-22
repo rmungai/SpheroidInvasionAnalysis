@@ -18,7 +18,7 @@
 clear; close all; clc
 
 % State your experiment details
-expt_no = '12 0.28T';
+expt_no = '12 0.04T';
 condition = 'dynamic';
 
 % Experiment duration
@@ -29,13 +29,20 @@ num_days = 2;
 pixel_size = 0.75488; %um/pixel
 
 %Initialize image detailes for loading
-selected_folder = 'C:\Users\rozie\OneDrive\Documents\MATLAB\Expt12-19 CopyForGitHub - PixelSquaresQuickDistances\Binarized 0.28T_E12_dynamic';
+selected_folder = 'C:\Users\rozie\OneDrive\Documents\MATLAB\Expt12-19 CopyForGitHub - PixelSquaresQuickDistances\Binarized 0.04T_E12_dynamic';
+%selected_folder = 'C:\Users\rozie\OneDrive\Documents\MATLAB\Expt12-19 CopyForGitHub - PixelSquaresQuickDistances\3D static - BW masked';
 addpath(selected_folder)
 
-files = {'6_maskedBW1 0.28T_E12_dynamic.tif', '6_maskedBW2 0.28T_E12_dynamic.tif'};
-filename0 = '6_maskedBW1 0.28T_E12_dynamic.tif';
-binarized_day0 = '6_maskedBW1 0.28T_E12_dynamic.tif';
-binarized_day2 = '6_maskedBW2 0.28T_E12_dynamic.tif';
+% files = {['6_maskedBW1_E', num2str(expt_no), '_', num2str(condition), '.tif'], '6_maskedBW2 0.28T_E12_dynamic.tif'};
+files = {'6_maskedBW1 0.04T_E12_dynamic.tif', '6_maskedBW2 0.04T_E12_dynamic.tif'};
+% filename0 = '6_maskedBW1 0.28T_E12_dynamic.tif';
+% binarized_day0 = '6_maskedBW1 0.28T_E12_dynamic.tif';
+% binarized_day2 = '6_maskedBW2 0.28T_E12_dynamic.tif';
+
+%files = {'6_maskedBW1_E12_static.tif', '6_maskedBW2_E18_static.tif'};
+filename0 = files{1};
+binarized_day0 = files{1};
+binarized_day2 = files{2};
 
 
 %% Run this part after quantification

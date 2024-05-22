@@ -13,19 +13,26 @@ function [final_pixels, Irb, Ixb, Iyb,  Irc, Ixc, Iyc, max_dist, median_dist, me
 
 %% Distance values ------------------------------------------
 
-outerdistance_lengths = outer_distance_magnitude{1};
-for i = 2:length(outer_distance_magnitude)
-    outerdmag_array_i = outer_distance_magnitude{i};
-    outerdistance_lengths = [outerdistance_lengths; outerdmag_array_i];
-end
+% %Comment out if these are already arrays
+% outerdistance_lengths = outer_distance_magnitude{1};
+% for i = 2:length(outer_distance_magnitude)
+%     outerdmag_array_i = outer_distance_magnitude{i};
+%     outerdistance_lengths = [outerdistance_lengths; outerdmag_array_i];
+% end
+% 
+% centerdistance_lengths = full_distance_magnitude{1};
+% for i = 2:length(full_distance_magnitude)
+%     centerdmag_array_i = full_distance_magnitude{i};
+%     centerdistance_lengths = [centerdistance_lengths; centerdmag_array_i];
+% end
 
-centerdistance_lengths = full_distance_magnitude{1};
-for i = 2:length(full_distance_magnitude)
-    centerdmag_array_i = full_distance_magnitude{i};
-    centerdistance_lengths = [centerdistance_lengths; centerdmag_array_i];
-end
+%Uncomment if they are already arrays
+outerdistance_lengths = outer_distance_magnitude;
+centerdistance_lengths = full_distance_magnitude;
 
 
+
+%Calculate distances in microns
 outerdistance_lengths_um = (outerdistance_lengths)*pixel_size;
 centerdistance_lengths_um = (centerdistance_lengths)*pixel_size;
 
@@ -57,11 +64,14 @@ set(gca,'Fontname','arial', 'FontSize',14);
 
 
 %Plot the angle values in a rose plot -----------------------------------
-angles_array = angles{1};
-for i = 2:length(angles)
-    angles_array_i = angles{i};
-    angles_array = [angles_array; angles_array_i];
-end
+
+% % Comment out if angles is already an array
+% angles_array = angles{1};
+% for i = 2:length(angles)
+%     angles_array_i = angles{i};
+%     angles_array = [angles_array; angles_array_i];
+% end
+angles_array = angles; %Uncomment if angles is alreeady an array
 
 % - convert angles to radians
 angles_array = deg2rad(angles_array);
@@ -99,7 +109,7 @@ text(xt, y, labels, 'HorizontalAlignment','center', 'VerticalAlignment','bottom'
 
 % Plot the distances from center vs angle values in a polar plot-----------
 figure
-polarplot(angles_array, centerdistance_lengths_um/1e3,'.')
+polarplot(angles_array, centerdistance_lengths_um/1e3,'*')
 title (["Distances from spheroid center (mm) vs","migration angle"])
 
 % - Set figure size: 
@@ -109,7 +119,7 @@ set(gca,'Fontname','arial', 'FontSize',14, 'OuterPosition', [0 0.2 1 0.75]);
 
 %Plot the boundary distance vs angle values in a polar plot-----------------
 figure 
-polarplot(angles_array, outerdistance_lengths/1e3,'.')
+polarplot(angles_array, outerdistance_lengths/1e3,'*')
 title (["Distances from spheroid boundary (mm) vs ","migration angle"])
 set(gca,'Fontname','arial', 'FontSize',14, 'OuterPosition', [0 0.2 1 0.75]);
 
@@ -145,6 +155,31 @@ set(gca,'Fontname','arial', 'FontSize',14, 'OuterPosition', [0 0.2 1 0.75]);
 
 % %///////////////////////////////////////////////////////////////////////
 %///////////////////////////////////////////////////////////////////////
+
+%Set up the directional distances as arrays - - - - - - - - - - - - - - - 
+
+% % - Comment out if the distances are already arrays
+% outer_distances_xy_array = outer_distances_xy{1};
+% for i = 2:length(outer_distances_xy)
+%     outer_distances_xy_array_i = outer_distances_xy{i};
+%     outer_distances_xy_array = [outer_distances_xy_array; outer_distances_xy_array_i];
+% end 
+% 
+% 
+% full_distances_xy_array = full_distances_xy{1};
+% for i = 2:length(full_distances_xy)
+%     full_distances_xy_array_i = full_distances_xy{i};
+%     full_distances_xy_array = [full_distances_xy_array; full_distances_xy_array_i];
+% end 
+
+% - Uncomment if the distances are already arrays
+outer_distances_xy_array = outer_distances_xy;
+full_distances_xy_array = full_distances_xy;
+
+
+
+
+
 %Calculate the area moment of inertia from the boundary in pixels ---------
 % - Iro = sum((outer_distance_mag)^2 * 1):
 % - - - polar movement from boundary
@@ -152,14 +187,6 @@ set(gca,'Fontname','arial', 'FontSize',14, 'OuterPosition', [0 0.2 1 0.75]);
 %  - - - y-dir movement from x axis from boundary
 % - Iyo = sum((outer_distance_x)^2 * 1):
 % - - - x-dir movement from y-axis from boundary
-
-
-outer_distances_xy_array = outer_distances_xy{1};
-for i = 2:length(outer_distances_xy)
-    outer_distances_xy_array_i = outer_distances_xy{i};
-    outer_distances_xy_array = [outer_distances_xy_array; outer_distances_xy_array_i];
-end 
-
 
 a = 1; %area for calculation - in this case = 1 bc pixels
 disp('Area Moment of Inertia values Ix and Iy from spheroid boundary:')
@@ -172,13 +199,6 @@ Iyb = sum(outer_distances_xy_array(:,1).^2 * a)
 % - Ir = sum((distance_mag)^2 * 1); polar movement from center
 % - Ix = sum((distance_y)^2 * 1); y-dir movement from x axis
 % - Iy = sum((distance_x)^2 * 1); x-dir movement from y-axis
-
-full_distances_xy_array = full_distances_xy{1};
-for i = 2:length(full_distances_xy)
-    full_distances_xy_array_i = full_distances_xy{i};
-    full_distances_xy_array = [full_distances_xy_array; full_distances_xy_array_i];
-end 
-
 
 a = 1; %area for calculation - in this case = 1 bc pixels
 disp('Area Moment of Inertia values Ix and Iy from spheroid center:')
