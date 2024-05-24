@@ -86,6 +86,8 @@ plot(centroid_loc(1), centroid_loc(2), 'g*')
 plot(centroid_loc2(1), centroid_loc2(2), 'b*')
 hold off
 title('uncentered boundary')
+axis('on', 'image'); %Add axes to image
+
 
 
 figure
@@ -94,6 +96,8 @@ hold on
 plot(centered_boundary(:,1), centered_boundary(:,2), 'g', 'LineWidth', 3);
 plot(centroid_loc2(1), centroid_loc2(2), 'b*')
 title('centered boundary and outer pixels')
+axis('on', 'image');
+
 
 for i = 1:length(outer_pixels2)
     if isempty(outer_pixels2{i})

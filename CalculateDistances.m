@@ -28,7 +28,7 @@ plot(centroid_loc(1), centroid_loc(2), 'b*', 'LineWidth', 3)
 plot(boundary(:,1), boundary(:,2), 'g', 'LineWidth', 3)
 
 for i = 1:length(outer_pixels)
-    for j = 1:350:length(outer_pixels{i}(:,1))
+    for j = 1:50:length(outer_pixels{i}(:,1))
         plot([centroid_loc(1), outer_pixels{i}(j,1)], [centroid_loc(2), outer_pixels{i}(j,2)], 'b')
     end    
 end
@@ -46,6 +46,7 @@ y = [centroid_loc(2), centroid_loc(2)]';
 horizontal_line = [x,y];
 plot([horizontal_line(1,1), horizontal_line(2,1)],[horizontal_line(1,2), horizontal_line(2,2)], 'r')
 title('distances from center')
+axis('on', 'image')  %Add axes to image
 hold off
 
 
@@ -92,7 +93,7 @@ hold on;
 for i = 1:length(outer_pixels)
     %plot(outer_pixels{i}(:,1),outer_pixels{i}(:,2), 'b.', 'LineWidth', 3)
     %plot(boundary_intersect{i}(:,1), boundary_intersect{i}(:,2), 'rx', 'LineWidth', 3) 
-    for j = 1:275:length(outer_pixels{i}(:,1))
+    for j = 1:50:length(outer_pixels{i}(:,1))
         plot([boundary_intersect{i}(j,1), outer_pixels{i}(j,1)], [boundary_intersect{i}(j,2), outer_pixels{i}(j,2)], 'c')
     end
 end
@@ -102,6 +103,7 @@ plot(boundary(:,1), boundary(:,2), 'g', 'LineWidth', 3)
 plot([horizontal_line(1,1), horizontal_line(2,1)],[horizontal_line(1,2), horizontal_line(2,2)], 'r')
 
 title('distances from boundary')
+axis('on', 'image')  %Add axes to image
 hold off
 
 

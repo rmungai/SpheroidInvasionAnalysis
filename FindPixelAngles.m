@@ -75,13 +75,17 @@ plot([centroid_loc(1), outer_pixels{round((1/4)*end)}(end,1)], [centroid_loc(2),
 plot([centroid_loc(1), outer_pixels{round(end/2)}(end,1)], [centroid_loc(2), outer_pixels{round(end/2)}(end,2)])
 
 
-title("angles of migration")
-legend(num2str(angles{round((3/4)*end)}(end)), num2str(angles{end-1}(end)), ...
-    num2str(angles{round((1/4)*end)}(end)), num2str(angles{round(end/2)}(end)))
+title("angles of migration in degrees")
+legend( [num2str(round(angles{round((3/4)*end)}(end) )), char(176)], ...
+    [num2str(round(angles{round(end-1)}(end) )),  char(176)],...
+    [num2str(round(angles{round((1/4)*end)}(end) )),  char(176)], ...
+    [num2str(round(angles{round(end/2)}(end) )), char(176)], 'AutoUpdate','off' )
 
 %Show the boundary and horizontal line on the image
 plot(boundary(:,1), boundary(:,2), 'g', 'LineWidth', 3);
 plot([horizontal_line(1,1), horizontal_line(2,1)],[horizontal_line(1,2), horizontal_line(2,2)], 'r')
+
+axis('on', 'image')  %Add axes to images
 
 hold off
 

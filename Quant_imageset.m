@@ -106,7 +106,7 @@ for f = 1:2:numel(files)
 
     % Find the centroid of the spheroid clump (function 2)
     [centroid_loc, spheroid_area, centroids, areas, pixel_locs, boundary_pixel_locs] = Find_SpheroidCentroid(BW);
-    [centroid_loc2, spheroid_area2, centroids2, areas2, pixel_locs2, boundary_pixel_locs2] = Find_SpheroidCentroid(BW2);
+    [centroid_loc2, spheroid_area2, FEcentroids2, pixel_locs2, boundary_pixel_locs2, areas2, blob_centroids2] = FindSphCentroid_FilterImage(BW2);
     
     
     % Align the spheroid centroids (function 3)
@@ -156,7 +156,7 @@ for f = 1:2:numel(files)
 
     
     
-    % Save the figures  ------------------
+    %% Save the figures  ------------------
 
     
     % (1) Save as matlab figures ...................
