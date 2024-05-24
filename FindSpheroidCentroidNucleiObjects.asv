@@ -210,7 +210,7 @@ for k = 1 : numberOfBoundaries
 	thisBoundary = boundaries{k}; % Get boundary for this specific blob.
 	x = thisBoundary(:,2); % Column 2 is the columns, which is x.
 	y = thisBoundary(:,1); % Column 1 is the rows, which is x.
-	plot(x, y, 'c-', 'LineWidth', 2); % Plot boundary in cyan color.
+	plot(x, y, 'r-', 'LineWidth', 2); % Plot boundary in red.
 end
 hold off;
 

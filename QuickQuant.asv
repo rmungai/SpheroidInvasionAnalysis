@@ -19,7 +19,7 @@ clear; close all; clc
 
 % State your experiment details
 E = '12'; %expt number
-bthres = '0.28'; %binarizing threshold
+bthres = '0.04'; %binarizing threshold
 %expt_no = '12 0.04';
 expt_no = [num2str(E), ' ', num2str(bthres)]; %expt no and bthres
 condition = 'dynamic';
@@ -37,8 +37,8 @@ selected_folder = ['C:\Users\rozie\OneDrive\Documents\MATLAB\Expt12-19 CopyForGi
 addpath(selected_folder)
 
 files = {['6_maskedBW1 ', num2str(bthres), 'T_E', num2str(E), '_', num2str(condition), '.tif'],...
-    ['6_maskedBW2 ', num2str(bthres), 'T_E', num2str(E), '_', num2str(condition), '.tif']};
-% files = {'6_maskedBW1 0.04T_E12_dynamic.tif', '6_maskedBW2 0.04T_E12_dynamic.tif'}
+    ['6_maskedBW2 ', num2str(bthres), 'T_E', num2str(E), '_', num2str(condition), '.tif']}
+files = {'6_maskedBW1 0.04T_E12_dynamic.tif', '6_maskedBW2 0.04T_E12_dynamic.tif'}
 % filename0 = '6_maskedBW1 0.28T_E12_dynamic.tif';
 % binarized_day0 = '6_maskedBW1 0.28T_E12_dynamic.tif';
 % binarized_day2 = '6_maskedBW2 0.28T_E12_dynamic.tif';
@@ -52,9 +52,7 @@ binarized_day2 = files{2};
 %% Run this part after quantification
 
 %Display values in mm units (area = mm2, dist = mm, moment = mm4)
-num_FilteredBlobs = numel(outer_centroids2(:, 1))
-outer_areas_mm = sum(outer_areas2) * (pixel_size/1e3)^2
-%area_change_mm = (sum(areas2) - sum(areas)) * (pixel_size/1e3)^2
+area_change_mm = (sum(areas2) - sum(areas)) * (pixel_size/1e3)^2
 mean_dist_mm = mean_dist/1e3
 Irb_mm = Irb*(pixel_size/1e3)^4
 

@@ -1,8 +1,8 @@
 %% Image quantification MATLAB script for 3D spheroid migration
 % Rozanne Mungai Billiar Lab; April 2022
 
-function [outer_blobs, poly_boundary, centered_boundary] = AlignCentroidsandFindBlobPOI(boundary, ...
-    binary_image, centroid_loc, centroid_loc2, blob_centroids, boundary_pixel_locs) 
+function [outer_blobs, outer_areas, poly_boundary, centered_boundary] = AlignCentroidsandFindBlobPOI(boundary, ...
+    binary_image, centroid_loc, centroid_loc2, blob_centroids, boundary_pixel_locs, blob_areas) 
 
 % This function aligns the spheroid centroids from the different days and finds
 % - all the pixel points outside the day 0 boundary (the points of interest - POI)
@@ -25,6 +25,7 @@ poly_boundary = polyshape(centered_boundary(:,1), centered_boundary(:,2));
 disp('Determining blobs outside of boundary')
 outer_blobs_index = ~isinterior(poly_boundary, blob_centroids);
 outer_blobs = blob_centroids(outer_blobs_index,:);
+outer_areas = blob_areas(outer_blobs_index,:);
 
 % for i = 1:length(boundary_pixel_locs)
 % 
@@ -88,7 +89,7 @@ plot(centroid_loc(1), centroid_loc(2), 'g*')
 plot(centroid_loc2(1), centroid_loc2(2), 'b*')
 hold off
 title('uncentered boundary')
-
+axis('on', 'image'); 
 
 figure
 imshow(binary_image)
@@ -97,7 +98,7 @@ plot(centered_boundary(:,1), centered_boundary(:,2), 'g', 'LineWidth', 3);
 plot(centroid_loc2(1), centroid_loc2(2), 'b*')
 title('centered boundary and outer blobs')
 plot(outer_blobs(:,1), outer_blobs(:,2), 'c*')
-
+axis('on', 'image'); 
 
 
 % for i = 1:length(outer_pixels2)

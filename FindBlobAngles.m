@@ -67,6 +67,7 @@ legend( [num2str(round(angles(round((3/4)*end)))), char(176)], ...
 plot(boundary(:,1), boundary(:,2), 'g', 'LineWidth', 3);
 plot([horizontal_line(1,1), horizontal_line(2,1)],[horizontal_line(1,2), horizontal_line(2,2)], 'r')
 
+axis('on', 'image'); 
 hold off
 
 end

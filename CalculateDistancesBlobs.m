@@ -52,6 +52,7 @@ y = [centroid_loc(2), centroid_loc(2)]';
 horizontal_line = [x,y];
 plot([horizontal_line(1,1), horizontal_line(2,1)],[horizontal_line(1,2), horizontal_line(2,2)], 'r')
 title('distances from center')
+axis('on', 'image'); 
 hold off
 
 
@@ -123,6 +124,7 @@ plot(boundary(:,1), boundary(:,2), 'g', 'LineWidth', 3)
 plot([horizontal_line(1,1), horizontal_line(2,1)],[horizontal_line(1,2), horizontal_line(2,2)], 'r')
 
 title('distances from boundary')
+axis('on', 'image'); 
 hold off
 
 

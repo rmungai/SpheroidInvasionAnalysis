@@ -67,7 +67,7 @@ plot(spheroid_x_centroid, spheroid_y_centroid, 'b*')
 hold off
 title('spheroid centroid')
 legend('weighted', 'non-weighted')
-
+axis('on', 'image'); 
 
 %Compile final outputs
 spheroid_centroid = [spheroid_x_centroid,spheroid_y_centroid];

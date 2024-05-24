@@ -30,8 +30,10 @@ imshow(I)
 hold on;
 % plot(boundary(:,2), boundary(:,1), 'g', 'LineWidth', 3);
 plot(boundary(:,1), boundary(:,2), 'g', 'LineWidth', 3);
+axis('on', 'image');
+title('Initial spheroid with boundary')
 hold off
-%title('Spheroid',string(image))
+
 
 
 
