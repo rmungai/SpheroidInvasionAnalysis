@@ -19,7 +19,7 @@ clear; close all; clc
 
 % State your experiment details
 E = '12'; %expt number
-bthres = '0.04'; %binarizing threshold
+bthres = '0.28'; %binarizing threshold
 %expt_no = '12 0.04';
 expt_no = [num2str(E), ' ', num2str(bthres)]; %expt no and bthres
 condition = 'dynamic';
@@ -54,8 +54,7 @@ binarized_day2 = files{2};
 
 %Display values in mm units (area = mm2, dist = mm, moment = mm4)
 
-%Version for using filtered nuclei
-num_FilteredBlobs = numel(blob_centroids2(:, 1))
+num_FilteredBlobs = numel(outer_areas2(:, 1))
 
 outer_areas_mm = sum(outer_areas2) * (pixel_size/1e3)^2
 %area_change_mm = (sum(areas2) - sum(areas)) * (pixel_size/1e3)^2
@@ -65,6 +64,12 @@ mean_dist_mm = mean_dist/1e3
 Irb_mm = Irb*(pixel_size/1e3)^4
 
 
+% Add the new variables to teh existing .mat data file
+save(['Vars expt', expt_no, ' ', condition, ' sph6.mat'], 'num_FilteredBlobs',...
+    'outer_areas_mm', 'mean_dist_mm', 'Irb_mm', '-append')
+
 rmpath(selected_folder)
 
-% (!) Remember to save the new variables!!
+
+
+

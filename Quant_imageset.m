@@ -156,7 +156,7 @@ for f = 1:2:numel(files)
 
     
     
-    % Save the figures  ------------------
+    %% Save the figures  ------------------
 
     
     % (1) Save as matlab figures ...................
