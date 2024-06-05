@@ -15,7 +15,8 @@
 % Run this then start the Quant_imageset.m script from the second section 
 
 %%
-clear; close all; clc
+clear all; clc;
+close all; 
 
 % State your experiment details
 E = '12'; %expt number
@@ -31,7 +32,7 @@ num_days = 2;
 %Pixel size of your microscope images
 pixel_size = 0.75488; %um/pixel
 
-%Initialize image detailes for loading
+%Initialize image details for loading
 selected_folder = ['C:\Users\rozie\OneDrive\Documents\MATLAB\Expt12-19 CopyForGitHub - PixelSquaresQuickDistances\Binarized ', num2str(bthres), 'T_E', num2str(E), '_dynamic']
 %selected_folder = 'C:\Users\rozie\OneDrive\Documents\MATLAB\Expt12-19 CopyForGitHub - PixelSquaresQuickDistances\Binarized 0.04T_E12_dynamic'
 addpath(selected_folder)
@@ -57,5 +58,13 @@ outer_areas_mm = sum(outer_areas2) * (pixel_size/1e3)^2
 %area_change_mm = (sum(areas2) - sum(areas)) * (pixel_size/1e3)^2
 mean_dist_mm = mean_dist/1e3
 Irb_mm = Irb*(pixel_size/1e3)^4
+
+
+
+% Add the new variables to teh existing .mat data file
+save(['Vars expt', expt_no, ' centroids ', condition, ' sph6.mat'], 'num_FilteredBlobs',...
+    'outer_areas_mm', 'mean_dist_mm', 'Irb_mm', '-append')
+% save(['Vars expt', expt_no, ' ', condition, ' sph6.mat'], 'num_FilteredBlobs',...
+%     'outer_areas_mm', 'mean_dist_mm', 'Irb_mm', '-append')
 
 rmpath(selected_folder)
