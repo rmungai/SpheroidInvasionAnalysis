@@ -111,8 +111,8 @@ for f = 1:2:numel(files)
     
     % Align the spheroid centroids (function 3)
     tic %Set a timer for the function
-    [outer_pixels2, poly_boundary, day2centered_boundary] = AlignCentroidsandFindPixelPOI(boundary,... 
-        BW2, centroid_loc, centroid_loc2, pixel_locs2, boundary_pixel_locs2);
+    [outer_pixels2, outer_areas2, poly_boundary, day2centered_boundary] = AlignCentroidsandFindPixelPOI(boundary,... 
+        BW2, centroid_loc, centroid_loc2, blob_centroids2, pixel_locs2, boundary_pixel_locs2, areas2);
     compTime = toc
     
 
@@ -156,7 +156,7 @@ for f = 1:2:numel(files)
 
     
     
-    %% Save the figures  ------------------
+    % Save the figures  ------------------
 
     
     % (1) Save as matlab figures ...................
@@ -245,7 +245,7 @@ for f = 1:2:numel(files)
     clear i
     
     disp('Saving relevant workspace variables to file explorer')
-    save(['Vars expt', expt_no, ' ', condition, ' sph', spheroid_set{1}], ...
+    save(['Vars expt', expt_no, ' ', condition, ' sph', spheroid_set{1}, '.mat'], ...
         'files', 'final_pixels', 'Irb', 'Ixb', 'Iyb', 'Irc', 'Ixc', 'Iyc', 'areas', 'areas2',...
         'max_dist', 'median_dist', 'mean_dist', 'outerdistance_lengths_um', 'angles_array')
 

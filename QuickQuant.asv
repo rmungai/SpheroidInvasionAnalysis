@@ -19,7 +19,7 @@ clear; close all; clc
 
 % State your experiment details
 E = '12'; %expt number
-bthres = '0.04'; %binarizing threshold
+bthres = '0.28'; %binarizing threshold
 %expt_no = '12 0.04';
 expt_no = [num2str(E), ' ', num2str(bthres)]; %expt no and bthres
 condition = 'dynamic';
@@ -66,5 +66,3 @@ Irb_mm = Irb*(pixel_size/1e3)^4
 
 
 rmpath(selected_folder)
-
-% (!) Remember to save the new variables!!
