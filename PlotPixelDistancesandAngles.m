@@ -2,7 +2,7 @@
 % Rozanne Mungai Billiar Lab; April 2022
 
 function [final_pixels, Irb, Ixb, Iyb,  Irc, Ixc, Iyc, max_dist, median_dist, mean_dist, outerdistance_lengths_um, ...
-    angles_array] = PlotPixelDistancesandAngles(outer_distance_magnitude, outer_distances_xy, full_distance_magnitude, full_distances_xy, angles, pixel_size)
+    angles_array] = PlotPixelDistancesandAngles(outer_distance_magnitude, outer_distances_xy, full_distance_magnitude, full_distances_xy, angles, outer_areas2, pixel_size)
 %This function reads in the outer centroid areas (filtered to remove small particles) as well as 
 % their distances to the boundary and the angles from a horizontal line.
 % distx: distance value from center of spheroid to the migrating cell in x-direction
@@ -180,31 +180,59 @@ full_distances_xy_array = full_distances_xy;
 
 
 
-%Calculate the area moment of inertia from the boundary in pixels ---------
-% - Iro = sum((outer_distance_mag)^2 * 1):
+%Calculate the area moment of inertia from the boundary [pixel units] ---------
+% - Iro = sum((outer_distance_mag)^2 * (outer_areas) ):
 % - - - polar movement from boundary
-% - Ixo = sum((outer_distance_y)^2 * 1):
+% - Ixo = sum((outer_distance_y)^2 * (outer_areas) ):
 %  - - - y-dir movement from x axis from boundary
-% - Iyo = sum((outer_distance_x)^2 * 1):
+% - Iyo = sum((outer_distance_x)^2 * (outer_areas) ):
 % - - - x-dir movement from y-axis from boundary
 
-a = 1; %area for calculation - in this case = 1 bc pixels
 disp('Area Moment of Inertia values Ix and Iy from spheroid boundary:')
-Irb = sum(outerdistance_lengths.^2 * a)
-Ixb = sum(outer_distances_xy_array(:,2).^2 * a)
-Iyb = sum(outer_distances_xy_array(:,1).^2 * a)
+Irb = sum(outerdistance_lengths.^2 .* outer_areas2)
+Ixb = sum(outer_distances_xy_array(:,2).^2 .* outer_areas2)
+Iyb = sum(outer_distances_xy_array(:,1).^2 .* outer_areas2)
 
 
-%Calculate the area moment of inertia from the spheroid center in pixels --------
-% - Ir = sum((distance_mag)^2 * 1); polar movement from center
-% - Ix = sum((distance_y)^2 * 1); y-dir movement from x axis
-% - Iy = sum((distance_x)^2 * 1); x-dir movement from y-axis
+%Calculate the area moment of inertia from the spheroid center [pixel units] --------
+% - Ir = sum((distance_mag)^2 * (outer_areas) ); polar movement from center
+% - Ix = sum((distance_y)^2 * (outer_areas) ); y-dir movement from x axis
+% - Iy = sum((distance_x)^2 * (outer_areas) ); x-dir movement from y-axis
 
-a = 1; %area for calculation - in this case = 1 bc pixels
 disp('Area Moment of Inertia values Ix and Iy from spheroid center:')
-Irc = sum(centerdistance_lengths.^2 * a)
-Ixc = sum(full_distances_xy_array(:,2).^2 * a)
-Iyc = sum(full_distances_xy_array(:,1).^2 * a)
+Irc = sum(centerdistance_lengths.^2 .* outer_areas2)
+Ixc = sum(full_distances_xy_array(:,2).^2 .* outer_areas2)
+Iyc = sum(full_distances_xy_array(:,1).^2 .* outer_areas2)
+
+
+
+% % Previous method for calculating the area moment of inertia for
+% % the pixel-based quantification method
+% % Calculate the area moment of inertia from the boundary in pixels ---------
+% % - Iro = sum((outer_distance_mag)^2 * 1):
+% % - - - polar movement from boundary
+% % - Ixo = sum((outer_distance_y)^2 * 1):
+% %  - - - y-dir movement from x axis from boundary
+% % - Iyo = sum((outer_distance_x)^2 * 1):
+% % - - - x-dir movement from y-axis from boundary
+% outer_areas2
+% a = 1; %area for calculation - in this case = 1 bc pixels
+% disp('Area Moment of Inertia values Ix and Iy from spheroid boundary:')
+% Irb = sum(outerdistance_lengths.^2 * a)
+% Ixb = sum(outer_distances_xy_array(:,2).^2 * a)
+% Iyb = sum(outer_distances_xy_array(:,1).^2 * a)
+% 
+% 
+% % Calculate the area moment of inertia from the spheroid center in pixels --------
+% % - Ir = sum((distance_mag)^2 * 1); polar movement from center
+% % - Ix = sum((distance_y)^2 * 1); y-dir movement from x axis
+% % - Iy = sum((distance_x)^2 * 1); x-dir movement from y-axis
+% 
+% a = 1; %area for calculation - in this case = 1 bc pixels
+% disp('Area Moment of Inertia values Ix and Iy from spheroid center:')
+% Irc = sum(centerdistance_lengths.^2 * a)
+% Ixc = sum(full_distances_xy_array(:,2).^2 * a)
+% Iyc = sum(full_distances_xy_array(:,1).^2 * a)
 
 
 

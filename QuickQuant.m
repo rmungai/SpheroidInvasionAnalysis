@@ -14,13 +14,13 @@
 % 
 % Run this then start the Quant_imageset.m script from the second section 
 
-%%
+%% Run this section first to load variables, then run Qunat_imageset.m
 clear all; clc;
 close all; 
 
 % State your experiment details
 E = '12'; %expt number
-bthres = '0.28'; %binarizing threshold
+bthres = '0.10'; %binarizing threshold
 %expt_no = '12 0.04';
 expt_no = [num2str(E), ' ', num2str(bthres)]; %expt no and bthres
 condition = 'dynamic';
@@ -61,7 +61,7 @@ Irb_mm = Irb*(pixel_size/1e3)^4
 
 
 
-% Add the new variables to teh existing .mat data file
+% Add the new variables to the existing .mat data file
 save(['Vars expt', expt_no, ' centroids ', condition, ' sph6.mat'], 'num_FilteredBlobs',...
     'outer_areas_mm', 'mean_dist_mm', 'Irb_mm', '-append')
 % save(['Vars expt', expt_no, ' ', condition, ' sph6.mat'], 'num_FilteredBlobs',...

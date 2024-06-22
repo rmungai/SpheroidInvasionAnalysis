@@ -153,7 +153,7 @@ for f = 1:2:numel(files)
         
     % Plot the distances and angles vs the areas (function 6)
    [final_pixels, Irb, Ixb, Iyb,  Irc, Ixc, Iyc, max_dist, median_dist, mean_dist, outerdistance_lengths_um, ...
-    angles_array] = PlotPixelDistancesandAngles(outer_distance_magnitude, outer_distances_xy, full_distance_magnitude, full_distances_xy, angles, pixel_size);
+    angles_array] = PlotPixelDistancesandAngles(outer_distance_magnitude, outer_distances_xy, full_distance_magnitude, full_distances_xy, angles, outer_areas2, pixel_size);
 
 
     
@@ -247,7 +247,7 @@ for f = 1:2:numel(files)
     clear i
     
     disp('Saving relevant workspace variables to file explorer')
-    save(['Vars expt', expt_no, ' centroids ', condition, ' sph', spheroid_set{1}], ...
+    save(['Vars expt', expt_no, ' centroids ', condition, ' sph', spheroid_set{1}, '.mat'], ...
         'files', 'final_pixels', 'Irb', 'Ixb', 'Iyb', 'Irc', 'Ixc', 'Iyc',...
         'outer_centroids2', 'outer_areas2',...
         'max_dist', 'median_dist', 'mean_dist', 'outerdistance_lengths_um', 'angles_array')
