@@ -57,7 +57,7 @@ sharpI = imsharpen(subI); %(subI)
 % imshowpair(I, subBW, 'montage')
 
 %sharpBW = imbinarize(sharpI, 'adaptive'); 
-sharpBW = imbinarize(sharpI, 0.16); %rasied from 0.14, 0.12 to get rid of outlier pixels
+sharpBW = imbinarize(sharpI, 0.16); %can raise and lower as needed for your images
 
 
 % figure
