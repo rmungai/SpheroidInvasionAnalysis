@@ -65,7 +65,7 @@ Use **ConsolidateData.m**, *if desired*, to compile the data obtained in "Quant_
   * Calls on PerformPCA.m
 
 ### BRANCHES:
-MAIN branch contains all scripts for the main pixel-based analysis detailed in the manuscript. The branches QUANTIFYING_NUCLEI_CENTROIDS and TESTING_BINARIZING_THRESHOLD_ONPIXELS contain the scripts used to compare the effect of thresholding on the quantified invasion metrics for teh object-based and pixel-based methods respectively. To perform this analysis, the "QuickQuant.m" script can be used to more easily load and save variables for running the "Quant_imageset.m" script. 
+MAIN branch contains all scripts for the main pixel-based analysis detailed in the manuscript. The branches QUANTIFYING_NUCLEI_CENTROIDS and TESTING_BINARIZING_THRESHOLD_ONPIXELS contain the scripts used to compare the effect of thresholding on the quantified invasion metrics for the object-based and pixel-based methods respectively. To perform this analysis, the "QuickQuant.m" script can be used to more easily load and save variables for running the "Quant_imageset.m" script. 
 
 ## Author info
 
