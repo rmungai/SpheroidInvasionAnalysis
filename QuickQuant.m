@@ -1,5 +1,4 @@
 %% Image quantification MATLAB script for 3D spheroid migration
-%% NOT FOR PUBLISHING
 %
 % Author: Rozanne W. Mungai 
 % - Billiar Lab, Worcester Polytechnic Institute
