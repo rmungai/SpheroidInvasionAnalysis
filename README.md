@@ -25,7 +25,7 @@ Use *ConsolidateData2.m* to compile the data from all spheroids processed in Qua
 ## **Pipeline**
 
 ### STEP 1:
-**Binarizing_imageset_two step.m** This script takes in gray scale 8-bit .tif images and automatically binarizes the images. A circular mask is applied around the spheroids for quantification consistency since, in cases of abundant invasion, the rectangular image frame can skew invasion results. Manual image correction is provided as an option in case further image processing is needed. This script is *optional* since binarizing and masking can be performed manually using FIJI if desired. It is recommended that constrast enhancing is performed before running this script to make automatic binarizing simpler.
+**Binarizing_imageset_two step.m** This script takes in gray scale 8-bit .tif images and automatically binarizes the images using the imbinarize(I,T) function with a global threshold value (currently set to 0.16, but can be adjusted as needed). A circular mask is applied around the spheroids for quantification consistency since, in cases of abundant invasion, the rectangular image frame can skew invasion results. Manual image correction is provided as an option in case further image processing is needed. This script is *optional* since binarizing and masking can be performed manually using FIJI if desired. It is recommended that constrast enhancing is performed before running this script to make automatic binarizing simpler.
 
 Function tree:
   * Binarize_image.m
