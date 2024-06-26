@@ -17,7 +17,7 @@ MATLAB R2021a or later with the image processing toolbox
 
 Use *Binarizing_imageset_two step.m* to automatically binarize gray scale 8-bit .tif images and apply a circular mask around the image edges. 
 
-(MAIN) Use *Quant_imageset.m* to quantify invasion using two sets of images per spheroid: (1) initial and (2) final time points
+(MAIN) Use *Quant_imageset.m* to quantify invasion using two sets of images per spheroid: (1) initial and (2) final time points. **Note:** Rather than using object-based image segmentation, this method is pixel-based.
 
 Use *ConsolidateData2.m* to compile the data from all spheroids processed in Quant_imagesetrocessImages.m into one file for easier organization.
 
@@ -64,6 +64,11 @@ Use **ConsolidateData.m**, *if desired*, to compile the data obtained in "Quant_
 ### STEP 4:
 **PCA_script.m** performes Principle Component Analysis on the spheroid invasion data of one experiment in order to quantify invasion directionality trends. Load a ".mat" file that was saved using "ConsolidateData.m." The script will calculate the principle angles of invasion as well as transform the persistence speeds along the principle angles and calculate the transformed area moment of inertia. The variables are saved in a ".mat" file and the figures are saved as ".fig" files as well as compiled into a pdf document.
   * Calls on PerformPCA.m
+
+
+### BRANCHES:
+MAIN branch contains all scripts for the main pixel-based analysis detailed in the manuscript. The branches QUANTIFYING_NUCLEI_CENTROIDS and TESTING_BINARIZING_THRESHOLD_ONPIXELS contain the scripts used to compare the effect of thresholding on the quantified invasion metrics for teh object-based and pixel-based methods respectively. To perform this analysis, the "QuickQuant.m" script can be used to more easily load and save variables for running the "Quant_imageset.m" script. 
+
 
 
 ## Author info
