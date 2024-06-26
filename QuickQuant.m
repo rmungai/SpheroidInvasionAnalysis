@@ -1,5 +1,4 @@
 %% Image quantification MATLAB script for 3D spheroid migration on pixels
-%% NOT FOR PUBLISHING
 %
 % Author: Rozanne W. Mungai 
 % - Billiar Lab, Worcester Polytechnic Institute
@@ -31,7 +30,7 @@ num_days = 2;
 %Pixel size of your microscope images
 pixel_size = 0.75488; %um/pixel
 
-%Initialize image detailes for loading
+%Initialize image details for loading
 selected_folder = ['C:\Users\rozie\OneDrive\Documents\MATLAB\Expt12-19 CopyForGitHub - PixelSquaresQuickDistances\Binarized ', num2str(bthres), 'T_E', num2str(E), '_dynamic']
 %selected_folder = 'C:\Users\rozie\OneDrive\Documents\MATLAB\Expt12-19 CopyForGitHub - PixelSquaresQuickDistances\Binarized 0.04T_E12_dynamic'
 addpath(selected_folder)
