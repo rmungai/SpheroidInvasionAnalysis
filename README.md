@@ -19,7 +19,7 @@ Use *Binarizing_imageset_two step.m* to automatically binarize gray scale 8-bit 
 
 (MAIN) Use *Quant_imageset.m* to quantify invasion using two sets of images per spheroid: (1) initial and (2) final time points. **Note:** Rather than using object-based image segmentation, this method is pixel-based.
 
-Use *ConsolidateData2.m* to compile the data from all spheroids processed in Quant_imagesetrocessImages.m into one file for easier organization.
+Use *ConsolidateData2.m* to compile the data from all spheroids processed in Quant_imageset.m into one file for easier organization.
 
 
 ## **Pipeline**
