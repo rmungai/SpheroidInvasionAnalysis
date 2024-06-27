@@ -1,7 +1,7 @@
 # SpheroidInvasionAnalysis
 
 
-**Correspoding manuscript:** "Towards an Objective and High-throughput Quantification Method for Spheroid Invasion Assays" Rozanne W. Mungai, Roger J. Hartman, Grace Jolin, Kevin Piskorowski , and Kristen L. Billiar. 
+**Corresponding manuscript:** "Towards an Objective and High-throughput Quantification Method for Spheroid Invasion Assays" Rozanne W. Mungai, Roger J. Hartman, Grace Jolin, Kevin Piskorowski , and Kristen L. Billiar. 
   * **DOI** *(---- TBD ---- )*
 
 
