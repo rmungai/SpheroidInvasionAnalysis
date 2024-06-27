@@ -2,13 +2,13 @@
 # SpheroidInvasionAnalysis
 
 
-**Correspoding manuscript:** "Towards an Objective and High-throughput Quantification Method for Spheroid Invasion Assays" Rozanne W. Mungai, Roger J. Hartman, Grace Jolin, Kevin Piskorowski , and Kristen L. Billiar. 
-  * **DOI** *(---- TBD ---- )*
+**Corresponding manuscript:** "Towards an Objective and High-throughput Quantification Method for Spheroid Invasion Assays" Rozanne W. Mungai, Roger J. Hartman, Grace Jolin, Kevin Piskorowski , and Kristen L. Billiar. 
+  * **DOI** *(will be added after publication, currently in peer-review)*
 
 
-This repository contains MATLAB scripts used to batch process images of multicellular spheroids and quantify invasion between two snapshot images. It is intended for cases where the same spheroid is imaged at an initial timepoint (such as Day 0, when no invasion has occured) and again imaged at a final timepoint (such as Day 2) to calculate the extent of invasion from the spheroid. Please see the corresponding manuscript for a use-case example:
+This repository contains MATLAB scripts used to batch process images of multicellular spheroids and quantify invasion between two snapshot images. It is intended for cases where the same spheroid is imaged at an initial timepoint (such as Day 0, when no invasion has occured) and again imaged at a final timepoint (such as Day 2) to calculate the extent of invasion from the spheroid. Please see the corresponding manuscript for a use-case example.
 
-A GUI (for those unfamiliar with programming) and a Python version of these scripts are provided in Python by @rogerh2 for ease-of-use. 
+A GUI (for those unfamiliar with programming) and a Python version of these scripts are provided in Python by @rogerh2 for ease of use. 
 
 ## **Requirements**
 MATLAB R2021a or later with the image processing toolbox
@@ -25,7 +25,7 @@ Use *ConsolidateData2.m* to compile the data from all spheroids processed in Qua
 ## **Pipeline**
 
 ### STEP 1:
-**Binarizing_imageset_two step.m** This script takes in gray scale 8-bit .tif images and automatically binarizes the images using the imbinarize(I,T) function with a global threshold value (currently set to 0.16, but can be adjusted as needed). A circular mask is applied around the spheroids for quantification consistency since, in cases of abundant invasion, the rectangular image frame can skew invasion results. Manual image correction is provided as an option in case further image processing is needed. This script is *optional* since binarizing and masking can be performed manually using FIJI if desired. It is recommended that constrast enhancing is performed before running this script to make automatic binarizing simpler.
+**Binarizing_imageset_two step.m** This script takes in grayscale 8-bit .tif images and automatically binarizes the images using the imbinarize(I,T) function with a global threshold value (currently set to 0.16, but can be adjusted as needed). A circular mask is applied around the spheroids for quantification consistency since, in cases of abundant invasion, the rectangular image frame can skew invasion results. Manual image correction is provided as an option in case further image processing is needed. This script is *optional* since binarizing and masking can be performed externally if desired (such as with FIJI). It is recommended that contrast enhancing is performed before running this script to simplify automatic binarization.
 
 Function tree:
   * Binarize_image.m
@@ -58,7 +58,7 @@ Function tree:
   
 
 ### STEP 3:
-Use **ConsolidateData.m**, *if desired*, to compile the data obtained in "Quant_imageset.m" into one ".mat" file. For best results, "Quant_imageset.m" should be run on images from one experiment condition at a time, so the output .mat file of "COnsolidateData.m" will contain all the spheroids of a single experiment condition. The consolidated data can then be extracted by the user for further organization and analysis as desired. 
+Use **ConsolidateData.m**, *if desired*, to compile the data obtained in "Quant_imageset.m" into one ".mat" file. For best results, "Quant_imageset.m" should be run on images from one experiment condition at a time, so the output .mat file of "ConsolidateData.m" will contain all the spheroids of a single experiment condition. The consolidated data can then be extracted by the user for further organization and analysis as desired. 
 
 
 ### STEP 4:
