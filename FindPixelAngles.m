@@ -69,19 +69,40 @@ end
 % plot([centroid_loc(1), outer_pixels{8}(end,1)], [centroid_loc(2), outer_pixels{8}(end,2)])
 % plot([centroid_loc(1), outer_pixels{130}(end,1)], [centroid_loc(2), outer_pixels{130}(end,2)])
 
-plot([centroid_loc(1), outer_pixels{round((3/4)*end)}(end,1)], [centroid_loc(2), outer_pixels{round((3/4)*end)}(end,2)])
-plot([centroid_loc(1), outer_pixels{end-1}(end,1)], [centroid_loc(2), outer_pixels{end-1}(end,2)])
-plot([centroid_loc(1), outer_pixels{round((1/4)*end)}(end,1)], [centroid_loc(2), outer_pixels{round((1/4)*end)}(end,2)])
-plot([centroid_loc(1), outer_pixels{round(end/2)}(end,1)], [centroid_loc(2), outer_pixels{round(end/2)}(end,2)])
+plot([centroid_loc(1), outer_pixels{round((3/4)*end)}(end,1)], [centroid_loc(2), outer_pixels{round((3/4)*end)}(end,2)], '-o')
+plot([centroid_loc(1), outer_pixels{end-1}(end,1)], [centroid_loc(2), outer_pixels{end-1}(end,2)], '-o')
+plot([centroid_loc(1), outer_pixels{round((1/4)*end)}(end,1)], [centroid_loc(2), outer_pixels{round((1/4)*end)}(end,2)], '-o')
+plot([centroid_loc(1), outer_pixels{round(end/2)}(end,1)], [centroid_loc(2), outer_pixels{round(end/2)}(end,2)], '-o')
+
+title("angles of invasion")
 
 
-title("angles of migration")
-legend(num2str(angles{round((3/4)*end)}(end)), num2str(angles{end-1}(end)), ...
-    num2str(angles{round((1/4)*end)}(end)), num2str(angles{round(end/2)}(end)))
 
-%Show the boundary and horizontal line on the image
-plot(boundary(:,1), boundary(:,2), 'g', 'LineWidth', 3);
-plot([horizontal_line(1,1), horizontal_line(2,1)],[horizontal_line(1,2), horizontal_line(2,2)], 'r')
+angle1 = num2str (round( angles{round((3/4)*end)}(end)) );
+angle2 = num2str (round( angles{end-1}(end)) );
+angle3 = num2str (round( angles{round((1/4)*end)}(end)) );
+angle4 = num2str (round( angles{round(end/2)}(end)) );
+
+
+legend( [angle1, char(176), 'C'], ...
+    [angle2, char(176), 'C'], ...
+    [angle3, char(176), 'C'],...
+    [angle4, char(176), 'C'] )
+
+
+% legend( [num2str(round(angles{round((3/4)*end)}(end))), char(176), 'C'], ...
+%     num2str(round(angles{end-1}(end))), ...
+%     num2str(round(angles{round((1/4)*end)}(end))), ...
+%     num2str(round(angles{round(end/2)}(end))) )
+
+
+%Show the boundary and horizontal line on the image 
+h5 = plot(boundary(:,1), boundary(:,2), 'g', 'LineWidth', 3);
+h6 = plot([horizontal_line(1,1), horizontal_line(2,1)],[horizontal_line(1,2), horizontal_line(2,2)], '--r');
+
+%Don't show boundary and horizontal line in the legend
+h5.HandleVisibility = 'off';
+h6.HandleVisibility = 'off';
 
 hold off
 
