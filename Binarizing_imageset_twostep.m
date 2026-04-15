@@ -21,9 +21,22 @@
 
 clear ; clc; close all
 
+% Keep this if you want docked figures - - - - - - - - - - - - - - -
+
+% - Dock the figures to the window, 
+% - to undo, change 'docked' to 'Normal'
+set(0,'DefaultFigureWindowStyle','docked'); 
+
+% - Suppress warnings about docked figures
+% - to undo, change 'off' to 'on'
+warning('off', 'MATLAB:Figure:SetPosition');
+warning('off', 'images:imshow:magnificationMustBeFitForDockedFigure');
+
+% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 
 % Prompt the user to input a value for a variable ------
-expt_no = input('What is the experiment number?  ');
+expt_no = input('What is the experiment number?  ', 's');
 condition = input('What is the experiment condition?  ' , 's');
 num_days = input('What are the number of days of the experiment?  ');
 %pixel_size = input('What is the um/pixel ratio of your images?');
@@ -45,9 +58,6 @@ disp(' ');
 % % Comparing day 2 to day 0 for now
 % num_days = 2;
 % 
-% %Experiment 12 images captured at 10X on the Keyence microscope
-% % - the pixel size is 0.75488 um/pixel
-% pixel_size = 0.75488; %um/pixel
 
 
 
@@ -103,19 +113,22 @@ for f = 1:2:numel(files)
     %% Process images
     
     %Binarize the images    
-    [BW] = Binarize_Image(day0);
-    [BW2] = Binarize_Image(day2);
+    [BW] = Binarize_Image(day0, 'day0');
+    [BW2] = Binarize_Image(day2, 'day2');
         
-    %Correct images for any remaining noise using a custom GUI
-    % - It is especially important to remove stray pixels for images that
-    % - will undergo boundary tracing. The edge of the spheorid must be
-    % - smooth and continuous for the function to work
-    [correctedBW] = Correct_BW(day0, BW);
-    [correctedBW2] = Correct_BW(day2, BW2);
-
-    disp('Masking images with circle')
-    [maskedBW] = Mask_Image_wCentroid(correctedBW); %Not needed for day0 but good for consistency
-    [maskedBW2] = Mask_Image_wCentroid(correctedBW2);
+    % % Keep commented out if the images were already corrected - - - - - -
+    % % and masked (such pre-processing using Fiji)
+    % % 
+    % % Correct images for any remaining noise using a custom GUI
+    % % - It is especially important to remove stray pixels for images that
+    % % - will undergo boundary tracing. The edge of the spheorid must be
+    % % - smooth and continuous for the function to work
+    % [correctedBW] = Correct_BW(day0, BW, 'day0');
+    %[correctedBW2] = Correct_BW(day2, BW2, 'day2');
+    % 
+    % disp('Masking images with circle')
+    % [maskedBW] = Mask_Image_wCentroid(correctedBW); %Not needed for day0 but good for consistency
+    % [maskedBW2] = Mask_Image_wCentroid(correctedBW2);
 
 
     
@@ -126,10 +139,17 @@ for f = 1:2:numel(files)
     disp(' ')
     disp('Now saving binarized images to specified folder')
 
-    %Save binarized images ..................................
-    % Save each image with a unique name in the specified folder
-    new_images = {correctedBW, correctedBW2, maskedBW, maskedBW2};
-    new_image_names = {'BW1', 'BW2', 'maskedBW1', 'maskedBW2'};
+    % Save binarized images ..................................
+    % - Save each image with a unique name in the specified folder
+
+    % % - Keep commented out if you didn't run the correcting and masking
+    % % - functions
+    % new_images = {correctedBW, correctedBW2, maskedBW, maskedBW2};
+    % new_image_names = {'BW1', 'BW2', 'maskedBW1', 'maskedBW2'};
+
+    % - Comment out this part if you did run them
+    new_images = {BW, BW2};
+    new_image_names = {'BW1', 'BW2'};
 
     %Automatically rename images
     % - This requires that the grayscale images were already named with the 
@@ -139,9 +159,9 @@ for f = 1:2:numel(files)
     % overwritting in next loop
 
     spheroid_set = extractBetween(day0,1,'_'); %requires that images start with the spheroid# and underscore
-    for i = 1:4
-        % full_image_name = ['Expt', num2str(expt_no), '_', new_image_names{i}, '_Sph', spheroid_set{1}, '.tif'];
-        full_image_name = [spheroid_set{1}, '_', new_image_names{i}, '_E', num2str(expt_no), '_', condition, '.tif'];
+    for i = 1:length(new_image_names)
+        % full_image_name = ['Expt', num2str(expt_info), '_', new_image_names{i}, '_Sph', spheroid_set{1}, '.tif'];
+        full_image_name = [spheroid_set{1}, '_', new_image_names{i}, '_', num2str(expt_info), condition, '.tif'];
         imwrite(new_images{i}, full_image_name);
         disp([' - Binarized image saved to: ' pwd]);    
     end
