@@ -29,6 +29,21 @@
 
 clear ; clc; close all
 
+
+% Keep this if you want docked figures - - - - - - - - - - - - - - -
+
+% - Dock the figures to the window, 
+% - to undo, change 'docked' to 'Normal'
+set(0,'DefaultFigureWindowStyle','docked'); 
+
+% - Suppress warnings about docked figures
+% - to undo, change 'off' to 'on'
+warning('off', 'MATLAB:Figure:SetPosition');
+warning('off', 'images:imshow:magnificationMustBeFitForDockedFigure');
+
+% - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
 %% Prompt the user to input a value for a variable ------
 expt_no = input('What is the experiment number?  ', 's');
 condition = input('What is the experiment condition?  ' , 's');
@@ -49,8 +64,10 @@ disp(['Pixel size #: ' num2str(pixel_size)]);
 % % - example: Day 0 to Day 2
 % num_days = 2;
 % 
-% %Pixel size of your microscope images
-% pixel_size = 0.75488; %um/pixel
+%Pixel size of your microscope images
+% - the pixel size of my images using the Keyence BZX is...
+% - 4X = 1.88721 um/pixel, 10X = 0.75488 um/pixel
+pixel_size = 0.75488; %um/pixel
 
 
 %% Set up folder to obtain images
@@ -76,10 +93,17 @@ file_pattern = fullfile(selected_folder, '*.tif');
 files = dir(file_pattern);
 
 
+%Check if the experiment details are correct
+disp(' ')
+disp('Paused, are the experiment details correct?')
+sprintf([expt_info, ' ', condition])
+input('yes')
+
+
 
 %% Start the loop
 
-for f = 7:2:numel(files)
+for f = 1:2:numel(files)
     
     
     %Read through two of the filenames at a time to compare the 
